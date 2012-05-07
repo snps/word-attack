@@ -13,7 +13,7 @@ public class ServerStub extends Thread {
 	public void run() {
 		while (!isInterrupted()) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// Nothing.
 			}
@@ -21,7 +21,7 @@ public class ServerStub extends Thread {
 			gui.moveEnemies();
 			
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// Nothing.
 			}
@@ -33,7 +33,7 @@ public class ServerStub extends Thread {
 			gui.moveEnemies();
 			
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// Nothing.
 			}
