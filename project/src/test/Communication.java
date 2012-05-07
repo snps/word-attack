@@ -7,6 +7,7 @@ import org.junit.Test;
 import server.*;
 import view.*;
 import client.*;
+import enemy.Enemy;
 
 public class Communication {
 
@@ -16,18 +17,42 @@ public class Communication {
 		ClientListener clientListener = new ClientListener(words);
 		clientListener.start();
 		
-		IGui gui = new DogGui();
+		Gui gui = new DogGui();
 		Client client = new Client(gui);	//behövs gui?
 		client.update(null, null);
 //		assertEquals("dog", words.getWord());
 	}
 	
-	private class DogGui implements IGui {
+	private class DogGui implements Gui {
 
 		@Override
 		public String getPlayerInput() {
 			// TODO Auto-generated method stub
 			return "dog";
+		}
+
+		@Override
+		public void addEnemy(Enemy enemy) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void moveEnemies() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void removeEnemy(Enemy enemy) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void showMessage(String text) {
+			// TODO Auto-generated method stub
+			
 		}
 		
 	}
