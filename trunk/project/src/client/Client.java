@@ -14,7 +14,7 @@ public class Client implements Observer {
 
 	@Override
 	public void update(Observable obs, Object o) {
-		String word = gui.getPlayerWord();
+		String word = gui.getPlayerInput();
 		
 		// TODO
 	}
