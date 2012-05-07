@@ -3,12 +3,12 @@ package client;
 import java.util.Observable;
 import java.util.Observer;
 
-import view.IGui;
+import view.Gui;
 
 public class Client implements Observer {
-	private IGui gui;
+	private Gui gui;
 	
-	public Client(IGui gui) {
+	public Client(Gui gui) {
 		this.gui = gui;
 	}
 
