@@ -10,7 +10,7 @@ public class Enemy {
 		this.word = word;
 		this.speed = speed;
 		this.xPos = xPos;
-		yPos = -20;
+		yPos = 0;
 	}
 
 	public String getWord() {
@@ -30,6 +30,10 @@ public class Enemy {
 	}
 	
 	public void move() {
-		yPos -= speed;
+		yPos += speed;
+	}
+	
+	public int getWordWidth() {
+		return word.length() * 10;
 	}
 }
