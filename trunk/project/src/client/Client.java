@@ -16,7 +16,8 @@ public class Client implements Observer {
 	public void update(Observable obs, Object o) {
 		String word = gui.getPlayerInput();
 		
-		// TODO
+		// FIXME
+		gui.showMessage(word);
 	}
 
 }
