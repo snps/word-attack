@@ -21,7 +21,7 @@ import enemy.Enemy;
 
 public class PlayBoard extends Observable implements Gui, ActionListener {
 	private static final String PROGRAM_TITLE = "Word Attack";
-	private static final String PROGRAM_VERSION = "0.1";
+	private static final String PROGRAM_VERSION = "0.2";
 
 	public static final int PROGRAM_WIDTH = 800;
 	public static final int PROGRAM_HEIGHT = 600;
@@ -110,13 +110,22 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 		enemyList.remove(enemy);
 	}
 
+	/**
+	 * <p>
+	 * <code>public void actionPerformed(ActionEvent event)</code>
+	 * </p>
+	 * <p>
+	 * Event handler method for PlayBoard.
+	 * </p>
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == playerInputField) {
 			actionPerformed(new ActionEvent(sendButton, ActionEvent.ACTION_PERFORMED, null));
 		}
 		if (event.getSource() == sendButton) {
-			// showMessage("Word sent!");
+			setChanged();
+			notifyObservers();
 
 			playerInputField.setText("");
 			playerInputField.requestFocusInWindow();
