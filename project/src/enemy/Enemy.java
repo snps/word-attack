@@ -16,24 +16,28 @@ public class Enemy {
 	public String getWord() {
 		return word;
 	}
-	
+
 	public int getSpeed() {
 		return speed;
 	}
-	
+
 	public int getXPos() {
 		return xPos;
 	}
-	
+
 	public int getYPos() {
 		return yPos;
 	}
-	
+
 	public void move() {
 		yPos += speed;
 	}
-	
+
 	public int getWordWidth() {
 		return word.length() * 10;
+	}
+
+	public boolean equals(Enemy enemy) {
+		return enemy.word.equals(this.word);
 	}
 }
