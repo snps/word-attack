@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class Gui extends Observable {
+public class Gui extends Observable implements IGui {
 	private static final String PROGRAM_TITLE = "Word Attack";
 	private static final String PROGRAM_VERSION = "0.1";
 
