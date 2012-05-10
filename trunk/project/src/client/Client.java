@@ -90,6 +90,7 @@ public class Client implements Observer {
 			writer.writePacket(packet);
 		} catch (IOException e) {
 			System.err.println("Client could not write packet to server!");
+			gui.showMessage("Could not send data to server");
 		}
 	}
 
