@@ -53,8 +53,8 @@ public class NetPacketReader {
 	 * <p>
 	 * The reader will block on read operation until a {@link NetPacket} becomes
 	 * available or the specified timeout is reached. If the timeout is reached,
-	 * then a {@link NetPacketReaderTimeoutException} is generated. A timeout set
-	 * to 0 will cause read operations to block indefinitely.
+	 * then a {@link NetPacketReaderTimeoutException} is generated. A timeout
+	 * set to 0 will cause read operations to block indefinitely.
 	 * </p>
 	 * 
 	 * @param in
@@ -99,7 +99,7 @@ public class NetPacketReader {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-					throw new IOException();
+					Thread.currentThread().interrupt();
 				}
 				if (System.currentTimeMillis() > startTime + timeout) {
 					throw new NetPacketReaderTimeoutException();
