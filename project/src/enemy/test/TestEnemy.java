@@ -38,4 +38,12 @@ public class TestEnemy {
 		assertTrue(enemy1.equals(enemy2));
 		assertFalse(enemy1.equals(enemy3));
 	}
+	
+	@Test
+	public void testEnemyHashCode() {
+		Enemy enemy1 = new Enemy("Enemy", 10, 100);
+		int hashCode = "Enemy".hashCode();
+		
+		assertEquals("Wrong hash code", hashCode, enemy1.hashCode());
+	}
 }
