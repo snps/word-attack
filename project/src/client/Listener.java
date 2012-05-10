@@ -8,7 +8,7 @@ import net.NetPacketReader;
 import net.NetPacketReaderTimeoutException;
 
 public class Listener extends Thread {
-	public static final int READ_INTERVAL = 300;
+	public static final int READ_INTERVAL = 100;
 
 	private Client client;
 	private InputStream input;
@@ -35,8 +35,12 @@ public class Listener extends Thread {
 			}
 
 			// Handle packet.
-			handlePacket(packet);
+			if (packet != null) {
+				handlePacket(packet);
+			}
 		}
+		
+		System.out.println("Listener terminated");
 	}
 
 	private void handlePacket(NetPacket packet) {
@@ -63,7 +67,7 @@ public class Listener extends Thread {
 			} catch (IOException e) {
 				System.err.println("Could not disconnect from server!");
 			}
-			
+
 			client.showMessage("Game Over");
 		} else if (type == NetPacket.Type.UNKNOWN) {
 			client.showMessage("Unknown packet received from server");
