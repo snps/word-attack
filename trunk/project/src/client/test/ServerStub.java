@@ -1,13 +1,15 @@
 package client.test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import enemy.Enemy;
+import java.util.List;
 
 import net.NetPacket;
 import net.NetPacketWriter;
+import wordlist.WordFileReader;
+import enemy.Enemy;
 
 public class ServerStub extends Thread {
 	private int port;
@@ -28,20 +30,28 @@ public class ServerStub extends Thread {
 			System.err.println("Could not create server socket!");
 			return;
 		}
+		
+		WordFileReader wfr = null;
+		try {
+			wfr = new WordFileReader("words/words3.txt");
+		} catch (FileNotFoundException e) {
+			System.err.println("Word file not found!");
+			return;
+		}
+		
+		List<String> wordlist = wfr.readWords();
 
 		try {
-			int count = 0;
 			while (!isInterrupted()) {
 				NetPacket packet = new NetPacket(NetPacket.Type.MOVE_ENEMIES);
 				writer.writePacket(packet);
 				Thread.sleep(500);
 
-				count++;
-				String word = "tuffing" + count;
+				String word = wordlist.get((int) Math.floor(Math.random() * wordlist.size()));
 				packet = new NetPacket(NetPacket.Type.CREATE_ENEMY);
 				packet.addPacketElement(NetPacket.WORD_TAG, word);
-				int speed = (int) Math.round(Math.random() * 45 + 5);
-				int xPos = (int) Math.round(Math.random() * (800 - Enemy.getWordWidth(word)));
+				int speed = (int) Math.floor(Math.random() * 45 + 5);
+				int xPos = (int) Math.floor(Math.random() * (800 - Enemy.getWordWidth(word)));
 				packet.addPacketElement(NetPacket.SPEED_TAG, Integer.toString(speed));
 				packet.addPacketElement(NetPacket.X_POS_TAG, Integer.toString(xPos));
 				writer.writePacket(packet);
