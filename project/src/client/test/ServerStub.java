@@ -1,13 +1,12 @@
 package client.test;
 
-import enemy.Enemy;
-import view.Gui;
+import client.Client;
 
 public class ServerStub extends Thread {
-	private Gui gui;
+	private Client client;
 
-	public ServerStub(Gui gui) {
-		this.gui = gui;
+	public ServerStub(Client client) {
+		this.client = client;
 	}
 
 	public void run() {
@@ -18,7 +17,7 @@ public class ServerStub extends Thread {
 				// Nothing.
 			}
 			
-			gui.moveEnemies();
+			client.moveEnemies();
 			
 			try {
 				Thread.sleep(500);
@@ -28,9 +27,9 @@ public class ServerStub extends Thread {
 			
 			int speed = (int) Math.round(Math.random() * 45 + 5);
 			int xPos = (int) Math.round(Math.random() * 700);
-			gui.addEnemy(new Enemy("Elaking", speed, xPos));
+			client.createEnemy("Elaking", speed, xPos);
 			
-			gui.moveEnemies();
+			client.moveEnemies();
 			
 			try {
 				Thread.sleep(500);
@@ -38,7 +37,7 @@ public class ServerStub extends Thread {
 				// Nothing.
 			}
 			
-			gui.moveEnemies();
+			client.moveEnemies();
 		}
 	}
 }
