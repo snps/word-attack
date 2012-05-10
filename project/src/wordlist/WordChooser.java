@@ -1,6 +1,8 @@
 package wordlist;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * <p>
@@ -13,18 +15,49 @@ import java.util.List;
  */
 public class WordChooser {
 	private List<String> wordlist;
+	private List<String> chosenWords;
 
 	public WordChooser(List<String> wordlist) {
 		this.wordlist = wordlist;
+		chosenWords = new ArrayList<String>();
 	}
 
 	public boolean hasAvailableWord() {
-		// FIXME
+		if(chosenWords.isEmpty()){
+			return true;
+		}
+		int n = 0;
+		while (n < chosenWords.size()) {
+			String word = chosenWords.get(n);
+			int m = 0;
+			while(m < wordlist.size()) {
+				if(word.charAt(0) != wordlist.get(m).charAt(0)) {
+					return true;
+				}
+				m++;
+			}
+			n++;
+		}
 		return false;
 	}
 
 	public String getNextWord() {
-		// FIXME
+		Random rand = new Random();
+		int index = rand.nextInt(wordlist.size());
+		String word = wordlist.get(index);
+		if(chosenWords.isEmpty()) {
+			chosenWords.add(word);
+			return word;
+		} else {
+			index = rand.nextInt(wordlist.size());
+			word = wordlist.get(index);
+			while(hasAvailableWord()) {
+				if(chosenWords.get(index).charAt(0) != word.charAt(0)){
+					chosenWords.add(word);
+					return word;
+				}
+			}
+		}
 		return null;
 	}
 
