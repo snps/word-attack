@@ -33,7 +33,7 @@ public class Enemy {
 		yPos += speed;
 	}
 
-	public int getWordWidth() {
+	public static int getWordWidth(String word) {
 		return word.length() * 10;
 	}
 
