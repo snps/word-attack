@@ -1,16 +1,12 @@
 package client.test;
 
-import view.PlayBoard;
 import client.Client;
 
 public class ClientTest {
 	public static void main(String[] args) {
-		PlayBoard gui = new PlayBoard();
-		Client client = new Client(gui);
+		Client client = new Client("Player 1");
 		
-		gui.addObserver(client);
-		
-		ServerStub stub = new ServerStub(gui);
+		ServerStub stub = new ServerStub(client);
 		stub.isDaemon();
 		stub.start();
 	}

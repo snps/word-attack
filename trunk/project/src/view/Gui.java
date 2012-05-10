@@ -59,8 +59,8 @@ public interface Gui {
 	 * </p>
 	 * Show a message dialog in the Gui with the specified text.
 	 * 
-	 * @param text
+	 * @param message
 	 *            the message to show.
 	 */
-	public void showMessage(String text);
+	public void showMessage(String message);
 }
