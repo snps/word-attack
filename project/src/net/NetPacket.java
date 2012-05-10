@@ -11,11 +11,16 @@ package net;
  */
 public class NetPacket {
 	public static enum Type {
-		PLAYER_INPUT_UPDATE, CREATE_ENEMY, MOVE_ENEMYS, UNKNOWN
+		PLAYER_INPUT_UPDATE, CREATE_ENEMY, DESTROY_ENEMY, MOVE_ENEMIES, GAME_OVER, UNKNOWN
 	};
 
 	public static final String PACKET_TAG = "packet";
 	public static final String TYPE_TAG = "type";
+	public static final String PLAYER_INPUT_TAG = "input";
+	public static final String WORD_TAG = "word";
+	public static final String SPEED_TAG = "speed";
+	public static final String SCORING_PLAYER_TAG = "scoring-player";
+	public static final String X_POS_TAG = "xpos";
 
 	private static final String PACKET_HEAD = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><" + NetPacket.PACKET_TAG + ">";
 	private static final String PACKET_TAIL = "</" + NetPacket.PACKET_TAG + ">";
