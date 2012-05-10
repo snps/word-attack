@@ -17,15 +17,15 @@ public class Client implements Observer {
 	private Gui gui;
 	private Socket socket;
 	private Listener listener;
-	
+
 	private String name;
 	private int score;
 
 	public Client(String name) {
-		PlayBoard pb = new PlayBoard();
+		PlayBoard pb = new PlayBoard(this);
 		pb.addObserver(this);
 		gui = pb;
-		
+
 		this.name = name;
 		score = 0;
 	}
@@ -40,9 +40,18 @@ public class Client implements Observer {
 		listener.start();
 	}
 
-	public void disconnect() throws IOException {
+	public synchronized void disconnect() throws IOException {
+		System.out.println("Disconnecting client...");
+		
 		// Stop listener.
 		listener.interrupt();
+
+		// Give listener some time to terminate.
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 
 		// Close connection.
 		socket.close();
@@ -57,21 +66,21 @@ public class Client implements Observer {
 		Enemy enemy = new Enemy(word, 0, 0);
 		gui.removeEnemy(enemy);
 	}
-	
+
 	public void moveEnemies() {
 		gui.moveEnemies();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
 
 	public void increaseScore(String playerName) {
 		// FIXME add score to correct player.
-		
+
 		score += SCORE_PER_WORD;
 	}
-	
+
 	public void showMessage(String message) {
 		gui.showMessage(message);
 	}
