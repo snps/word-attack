@@ -25,7 +25,7 @@ import enemy.Enemy;
 
 public class PlayBoard extends Observable implements Gui, ActionListener {
 	private static final String PROGRAM_TITLE = "Word Attack";
-	private static final String PROGRAM_VERSION = "0.2";
+	private static final String PROGRAM_VERSION = "0.5";
 
 	public static final int PROGRAM_WIDTH = 800;
 	public static final int PROGRAM_HEIGHT = 600;
@@ -37,13 +37,11 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 	private JButton sendButton;
 
 	private HashMap<Enemy, JLabel> enemies;
-
 	private Client client;
 
 	public PlayBoard(Client client) {
-		this.client = client;
-
 		enemies = new HashMap<Enemy, JLabel>();
+		this.client = client;
 
 		// Create components.
 		playerInputField = new JTextField(20);
@@ -104,9 +102,9 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 	}
 
 	public void addEnemy(Enemy enemy) {
-		JLabel label = new JLabel(enemy.getWord());
-		label.setBounds(enemy.getXPos(), enemy.getYPos(), enemy.getWordWidth(), 20);
 		if (!enemies.containsKey(enemy)) {
+			JLabel label = new JLabel(enemy.getWord());
+			label.setBounds(enemy.getXPos(), enemy.getYPos(), enemy.getWordWidth(), 20);
 			enemies.put(enemy, label);
 			wordPanel.add(label);
 			panel.revalidate();
