@@ -37,7 +37,13 @@ public class Enemy {
 		return word.length() * 10;
 	}
 
-	public boolean equals(Enemy enemy) {
-		return enemy.word.equals(this.word);
+	@Override
+	public boolean equals(Object obj) {
+		return ((Enemy) obj).word.equals(this.word);
+	}
+
+	@Override
+	public int hashCode() {
+		return word.hashCode();
 	}
 }
