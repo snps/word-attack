@@ -9,7 +9,7 @@ public class ClientTest {
 		Client client = new Client("Player 1");
 
 		ServerStub stub = new ServerStub(4444);
-		stub.isDaemon();
+		stub.setDaemon(true);
 		stub.start();
 
 		try {
