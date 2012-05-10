@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import enemy.Enemy;
+
 import net.NetPacket;
 import net.NetPacketWriter;
 
@@ -28,22 +30,25 @@ public class ServerStub extends Thread {
 		}
 
 		try {
+			int count = 0;
 			while (!isInterrupted()) {
 				NetPacket packet = new NetPacket(NetPacket.Type.MOVE_ENEMIES);
 				writer.writePacket(packet);
 				Thread.sleep(500);
 
+				count++;
+				String word = "tuffing" + count;
 				packet = new NetPacket(NetPacket.Type.CREATE_ENEMY);
-				packet.addPacketElement(NetPacket.WORD_TAG, "tuffing");
+				packet.addPacketElement(NetPacket.WORD_TAG, word);
 				int speed = (int) Math.round(Math.random() * 45 + 5);
-				int xPos = (int) Math.round(Math.random() * 750);
+				int xPos = (int) Math.round(Math.random() * (800 - Enemy.getWordWidth(word)));
 				packet.addPacketElement(NetPacket.SPEED_TAG, Integer.toString(speed));
 				packet.addPacketElement(NetPacket.X_POS_TAG, Integer.toString(xPos));
 				writer.writePacket(packet);
 				packet = new NetPacket(NetPacket.Type.MOVE_ENEMIES);
 				writer.writePacket(packet);
 				Thread.sleep(500);
-				
+
 				packet = new NetPacket(NetPacket.Type.MOVE_ENEMIES);
 				writer.writePacket(packet);
 				Thread.sleep(500);
