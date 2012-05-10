@@ -18,7 +18,7 @@ public class Communication {
 		clientListener.start();
 		
 		Gui gui = new DogGui();
-		Client client = new Client(gui);	//behövs gui?
+		Client client = new Client("Player 1");	//behövs gui?
 		client.update(null, null);
 //		assertEquals("dog", words.getWord());
 	}
