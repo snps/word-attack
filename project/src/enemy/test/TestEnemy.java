@@ -17,7 +17,7 @@ public class TestEnemy {
 		assertEquals(10, enemy.getSpeed());
 		assertEquals(100, enemy.getXPos());
 		assertEquals(0, enemy.getYPos());
-		assertEquals(50, enemy.getWordWidth());
+		assertEquals(50, Enemy.getWordWidth(enemy.getWord()));
 	}
 
 	@Test

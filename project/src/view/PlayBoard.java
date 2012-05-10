@@ -95,7 +95,7 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 
 			enemy.move();
 			JLabel label = enemies.get(enemy);
-			label.setBounds(enemy.getXPos(), enemy.getYPos(), enemy.getWordWidth(), 20);
+			label.setBounds(enemy.getXPos(), enemy.getYPos(), Enemy.getWordWidth(enemy.getWord()), 20);
 		}
 
 		panel.revalidate();
@@ -104,7 +104,7 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 	public void addEnemy(Enemy enemy) {
 		if (!enemies.containsKey(enemy)) {
 			JLabel label = new JLabel(enemy.getWord());
-			label.setBounds(enemy.getXPos(), enemy.getYPos(), enemy.getWordWidth(), 20);
+			label.setBounds(enemy.getXPos(), enemy.getYPos(), Enemy.getWordWidth(enemy.getWord()), 20);
 			enemies.put(enemy, label);
 			wordPanel.add(label);
 			panel.revalidate();
