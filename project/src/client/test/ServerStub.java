@@ -1,43 +1,57 @@
 package client.test;
 
-import client.Client;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import net.NetPacket;
+import net.NetPacketWriter;
 
 public class ServerStub extends Thread {
-	private Client client;
+	private int port;
 
-	public ServerStub(Client client) {
-		this.client = client;
+	public ServerStub(int port) {
+		this.port = port;
 	}
 
 	public void run() {
-		while (!isInterrupted()) {
-			try {
+		NetPacketWriter writer = null;
+
+		try {
+			ServerSocket server = new ServerSocket(port);
+			Socket socket = server.accept();
+			server.close();
+			writer = new NetPacketWriter(socket.getOutputStream());
+		} catch (IOException e) {
+			System.err.println("Could not create server socket!");
+			return;
+		}
+
+		try {
+			while (!isInterrupted()) {
+				NetPacket packet = new NetPacket(NetPacket.Type.MOVE_ENEMIES);
+				writer.writePacket(packet);
 				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// Nothing.
-			}
-			
-			client.moveEnemies();
-			
-			try {
+
+				packet = new NetPacket(NetPacket.Type.CREATE_ENEMY);
+				packet.addPacketElement(NetPacket.WORD_TAG, "tuffing");
+				int speed = (int) Math.round(Math.random() * 45 + 5);
+				int xPos = (int) Math.round(Math.random() * 750);
+				packet.addPacketElement(NetPacket.SPEED_TAG, Integer.toString(speed));
+				packet.addPacketElement(NetPacket.X_POS_TAG, Integer.toString(xPos));
+				writer.writePacket(packet);
+				packet = new NetPacket(NetPacket.Type.MOVE_ENEMIES);
+				writer.writePacket(packet);
 				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// Nothing.
-			}
-			
-			int speed = (int) Math.round(Math.random() * 45 + 5);
-			int xPos = (int) Math.round(Math.random() * 700);
-			client.createEnemy("Elaking", speed, xPos);
-			
-			client.moveEnemies();
-			
-			try {
+				
+				packet = new NetPacket(NetPacket.Type.MOVE_ENEMIES);
+				writer.writePacket(packet);
 				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// Nothing.
 			}
-			
-			client.moveEnemies();
+		} catch (IOException e) {
+			System.err.println("Could not write packet to client!");
+		} catch (InterruptedException e) {
+			// Nothing
 		}
 	}
 }
