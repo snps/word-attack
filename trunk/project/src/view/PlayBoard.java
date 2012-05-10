@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Observable;
 
 import javax.swing.JButton;
@@ -17,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import client.Client;
 import enemy.Enemy;
 
 public class PlayBoard extends Observable implements Gui, ActionListener {
@@ -32,12 +36,14 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 	private JTextField playerInputField;
 	private JButton sendButton;
 
-	private List<Enemy> enemyList;
-	private List<JLabel> labelList;
+	private HashMap<Enemy, JLabel> enemies;
 
-	public PlayBoard() {
-		enemyList = new ArrayList<Enemy>();
-		labelList = new ArrayList<JLabel>();
+	private Client client;
+
+	public PlayBoard(Client client) {
+		this.client = client;
+
+		enemies = new HashMap<Enemy, JLabel>();
 
 		// Create components.
 		playerInputField = new JTextField(20);
@@ -71,10 +77,12 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 		frame.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
+		frame.setResizable(false);
+		frame.addWindowListener(new WindowHandler());
 		frame.setVisible(true);
 	}
 
-	public synchronized void showMessage(String text) {
+	public void showMessage(String text) {
 		JOptionPane.showMessageDialog(panel, text);
 	}
 
@@ -83,19 +91,12 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 	}
 
 	public void moveEnemies() {
-		for (int i = 0, n = enemyList.size(); i < n; i++) {
-			Enemy enemy = enemyList.get(i);
+		Iterator<Enemy> itr = enemies.keySet().iterator();
+		while (itr.hasNext()) {
+			Enemy enemy = itr.next();
 
 			enemy.move();
-
-			if (labelList.size() <= i) {
-				JLabel label = new JLabel();
-				wordPanel.add(label);
-				labelList.add(label);
-			}
-
-			JLabel label = labelList.get(i);
-			label.setText(enemy.getWord());
+			JLabel label = enemies.get(enemy);
 			label.setBounds(enemy.getXPos(), enemy.getYPos(), enemy.getWordWidth(), 20);
 		}
 
@@ -103,11 +104,21 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 	}
 
 	public void addEnemy(Enemy enemy) {
-		enemyList.add(enemy);
+		JLabel label = new JLabel(enemy.getWord());
+		label.setBounds(enemy.getXPos(), enemy.getYPos(), enemy.getWordWidth(), 20);
+		if (!enemies.containsKey(enemy)) {
+			enemies.put(enemy, label);
+			wordPanel.add(label);
+			panel.revalidate();
+		}
 	}
 
 	public void removeEnemy(Enemy enemy) {
-		enemyList.remove(enemy);
+		if (enemies.containsKey(enemy)) {
+			panel.remove(enemies.get(enemy));
+			enemies.remove(enemy);
+			panel.revalidate();
+		}
 	}
 
 	/**
@@ -129,6 +140,18 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 
 			playerInputField.setText("");
 			playerInputField.requestFocusInWindow();
+		}
+	}
+
+	private class WindowHandler extends WindowAdapter {
+		@Override
+		public void windowClosing(WindowEvent e) {
+			try {
+				client.disconnect();
+			} catch (IOException e1) {
+				System.err.println("Could not disconnect from server!");
+			}
+			System.exit(0);
 		}
 	}
 }
