@@ -16,7 +16,7 @@ import wordlist.WordFileReader;
 
 public class TestWordChooser {
 	public static final String WORD_FILE1 = "words/words1.txt";
-	public static final String WORD_FILE2 = "words/words1.txt";
+	public static final String WORD_FILE2 = "words/words2.txt";
 
 	private List<String> words1;
 	private List<String> words2;
