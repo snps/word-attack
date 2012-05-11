@@ -12,7 +12,7 @@ import net.NetPacket;
 
 public class EnemyGenerator extends Thread {
 	public static final int TIME_BETWEEN_MOVES = 500;
-	public static final int TIME_BETWEEN_CREATE_ENEMY = 3000;
+	public static final int TIME_BETWEEN_CREATE_ENEMY = 1000;
 
 	private ClientMonitor clientMonitor;
 
