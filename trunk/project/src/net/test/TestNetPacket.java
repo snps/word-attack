@@ -29,7 +29,7 @@ public class TestNetPacket {
 		packet.addPacketElement(NetPacket.WORD_TAG, "groda");
 		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, "Player 1");
 
-		String correctXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><packet><type>DESTROY_ENEMY</type><word>groda</word><scoring-player>Player 1</scoring-player></packet>";
+		String correctXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><packet><type>DESTROY_ENEMY</type><word>groda</word><player>Player 1</player></packet>";
 
 		assertEquals("Packet payload content was not correct", correctXml, new String(packet.getBytes()));
 	}

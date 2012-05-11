@@ -11,13 +11,15 @@ import enemy.Enemy;
 public class TestEnemy {
 	@Test
 	public void testCreateEnemy() {
-		Enemy enemy = new Enemy("Enemy", 10, 100);
+		Enemy enemy1 = new Enemy("Enemy", 10, 100);
+		Enemy enemy2 = new Enemy("SuperMeanGuy", 10, 100);
 
-		assertEquals("Enemy", enemy.getWord());
-		assertEquals(10, enemy.getSpeed());
-		assertEquals(100, enemy.getXPos());
-		assertEquals(0, enemy.getYPos());
-		assertEquals(50, Enemy.getWordWidth(enemy.getWord()));
+		assertEquals("Enemy", enemy1.getWord());
+		assertEquals(10, enemy1.getSpeed());
+		assertEquals(100, enemy1.getXPos());
+		assertEquals(0, enemy1.getYPos());
+		assertEquals(60, Enemy.getWordWidth(enemy1.getWord()));
+		assertEquals(130, Enemy.getWordWidth(enemy2.getWord()));
 	}
 
 	@Test
@@ -38,12 +40,12 @@ public class TestEnemy {
 		assertTrue(enemy1.equals(enemy2));
 		assertFalse(enemy1.equals(enemy3));
 	}
-	
+
 	@Test
 	public void testEnemyHashCode() {
 		Enemy enemy1 = new Enemy("Enemy", 10, 100);
 		int hashCode = "Enemy".hashCode();
-		
+
 		assertEquals("Wrong hash code", hashCode, enemy1.hashCode());
 	}
 }
