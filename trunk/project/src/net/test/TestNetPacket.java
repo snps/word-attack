@@ -17,17 +17,17 @@ public class TestNetPacket {
 	public void testAddPacketElement() {
 		NetPacket packet = new NetPacket(NetPacket.Type.DESTROY_ENEMY);
 		packet.addPacketElement(NetPacket.WORD_TAG, "groda");
-		packet.addPacketElement(NetPacket.SCORING_PLAYER_TAG, "Player 1");
+		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, "Player 1");
 
 		assertEquals("Element content was not correct", "groda", packet.getPacketElementContent(NetPacket.WORD_TAG));
-		assertEquals("Element content was not correct", "Player 1", packet.getPacketElementContent(NetPacket.SCORING_PLAYER_TAG));
+		assertEquals("Element content was not correct", "Player 1", packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG));
 	}
 
 	@Test
 	public void testGetBytes() {
 		NetPacket packet = new NetPacket(NetPacket.Type.DESTROY_ENEMY);
 		packet.addPacketElement(NetPacket.WORD_TAG, "groda");
-		packet.addPacketElement(NetPacket.SCORING_PLAYER_TAG, "Player 1");
+		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, "Player 1");
 
 		String correctXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><packet><type>DESTROY_ENEMY</type><word>groda</word><scoring-player>Player 1</scoring-player></packet>";
 
