@@ -46,7 +46,7 @@ public class ServerStub extends Thread {
 			if (packet.getType() != NetPacket.Type.ACKNOWLEDGE) {
 				throw new IOException();
 			}
-			writer.writePacket(new NetPacket(NetPacket.Type.ACKNOWLEDGE));
+			writer.writePacket(packet);
 
 			// Add another player.
 			packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
