@@ -37,6 +37,11 @@ public class ServerStub extends Thread {
 			}
 			writer.writePacket(new NetPacket(NetPacket.Type.ACKNOWLEDGE));
 
+			// Add another player.
+			packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
+			packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, "Player 2");
+			writer.writePacket(packet);
+
 			// Start game.
 			writer.writePacket(new NetPacket(NetPacket.Type.START_GAME));
 		} catch (IOException e) {
