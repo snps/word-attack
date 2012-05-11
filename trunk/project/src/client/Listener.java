@@ -52,6 +52,10 @@ public class Listener extends Thread {
 			String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
 
 			client.addCoPlayer(playerName);
+		} else if (type == NetPacket.Type.REMOVE_PLAYER) {
+			String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
+
+			client.removeCoPlayer(playerName);
 		} else if (type == NetPacket.Type.CREATE_ENEMY) {
 			String word = packet.getPacketElementContent(NetPacket.WORD_TAG);
 			int speed = Integer.parseInt(packet.getPacketElementContent(NetPacket.SPEED_TAG));
