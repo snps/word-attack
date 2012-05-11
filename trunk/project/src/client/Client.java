@@ -12,6 +12,7 @@ import view.Gui;
 import enemy.Enemy;
 
 public class Client implements Observer {
+	public static final int CONNECT_TIMEOUT = 2000;
 	public static final int SCORE_PER_WORD = 100;
 
 	private Gui gui;
@@ -56,7 +57,7 @@ public class Client implements Observer {
 		// XXX Add security check: game version.
 		// Exchange acknowledgments
 		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
-		NetPacketReader reader = new NetPacketReader(socket.getInputStream());
+		NetPacketReader reader = new NetPacketReader(socket.getInputStream(), CONNECT_TIMEOUT);
 		writer.writePacket(new NetPacket(NetPacket.Type.ACKNOWLEDGE));
 		NetPacket packet = reader.readPacket();
 		if (packet.getType() != NetPacket.Type.ACKNOWLEDGE) {
