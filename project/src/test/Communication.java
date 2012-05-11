@@ -13,13 +13,13 @@ public class Communication {
 
 	@Test
 	public void clientSendsDog() {
-		ClientMonitor words = new ClientMonitor();
-		Listener clientListener = new Listener(words);
-		clientListener.start();
-		
-		Gui gui = new DogGui();
-		Client client = new Client(gui, "Player 1");	//behövs gui?
-		client.update(null, null);
+//		ClientMonitor words = new ClientMonitor();
+//		Listener clientListener = new Listener(words);
+//		clientListener.start();
+//		
+//		Gui gui = new DogGui();
+//		Client client = new Client(gui, "Player 1");	//behövs gui?
+//		client.update(null, null);
 //		assertEquals("dog", words.getWord());
 	}
 	
