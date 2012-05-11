@@ -79,7 +79,7 @@ public class Listener extends Thread {
 			}
 
 			client.showMessage("Game Over");
-		} else if (type == NetPacket.Type.UNKNOWN) {
+		} else {
 			client.showMessage("Unknown packet received from server");
 		}
 	}
