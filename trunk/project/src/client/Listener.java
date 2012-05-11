@@ -46,7 +46,9 @@ public class Listener extends Thread {
 	private void handlePacket(NetPacket packet) {
 		NetPacket.Type type = packet.getType();
 
-		if (type == NetPacket.Type.CREATE_ENEMY) {
+		if (type == NetPacket.Type.START_GAME) {
+			client.startGame();
+		} else if (type == NetPacket.Type.CREATE_ENEMY) {
 			String word = packet.getPacketElementContent(NetPacket.WORD_TAG);
 			int speed = Integer.parseInt(packet.getPacketElementContent(NetPacket.SPEED_TAG));
 			int xPos = Integer.parseInt(packet.getPacketElementContent(NetPacket.X_POS_TAG));
@@ -54,7 +56,7 @@ public class Listener extends Thread {
 			client.createEnemy(word, speed, xPos);
 		} else if (type == NetPacket.Type.DESTROY_ENEMY) {
 			String word = packet.getPacketElementContent(NetPacket.WORD_TAG);
-			String playerName = packet.getPacketElementContent(NetPacket.SCORING_PLAYER_TAG);
+			String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
 
 			client.destroyEnemy(word);
 			client.increaseScore(playerName);
