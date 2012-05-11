@@ -29,13 +29,19 @@ public class Client implements Observer {
 	}
 
 	public void connect(String host, int port) throws IOException {
+		System.out.println("Connecting to server " + host + " on port " + port);
+		
 		// Connect to host.
 		socket = new Socket(host, port);
+		
+		System.out.println("Client is connected to server. Starting listener...");
 
 		// Create and start server listener.
 		listener = new Listener(this, socket.getInputStream());
 		listener.setDaemon(true);
 		listener.start();
+		
+		System.out.println("Listener started.");
 	}
 
 	public synchronized void disconnect() throws IOException {
