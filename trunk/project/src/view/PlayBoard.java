@@ -6,10 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Observable;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,10 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import client.Client;
 import enemy.Enemy;
 
-public class PlayBoard extends Observable implements Gui, ActionListener {
+public class PlayBoard extends Gui implements ActionListener {
 	private static final String PROGRAM_TITLE = "Word Attack";
 	private static final String PROGRAM_VERSION = "0.5";
 
@@ -37,11 +34,9 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 	private JButton sendButton;
 
 	private HashMap<Enemy, JLabel> enemies;
-	private Client client;
 
-	public PlayBoard(Client client) {
+	public PlayBoard() {
 		enemies = new HashMap<Enemy, JLabel>();
-		this.client = client;
 
 		// Create components.
 		playerInputField = new JTextField(20);
@@ -144,11 +139,9 @@ public class PlayBoard extends Observable implements Gui, ActionListener {
 	private class WindowHandler extends WindowAdapter {
 		@Override
 		public void windowClosing(WindowEvent e) {
-			try {
-				client.disconnect();
-			} catch (IOException e1) {
-				System.err.println("Could not disconnect from server!");
-			}
+			setChanged();
+			notifyObservers("disconnect");
+			
 			System.exit(0);
 		}
 	}
