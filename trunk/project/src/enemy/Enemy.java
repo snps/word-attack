@@ -34,7 +34,7 @@ public class Enemy {
 	}
 
 	public static int getWordWidth(String word) {
-		return word.length() * 10;
+		return word.length() * 10 + 10;
 	}
 
 	@Override
