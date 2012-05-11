@@ -19,14 +19,12 @@ public class Client implements Observer {
 	private Listener listener;
 
 	private String playerName;
-	private int score;
 
 	public Client(Gui gui, String playerName) {
 		this.gui = gui;
 		this.gui.addObserver(this);
-
+		this.gui.addPlayer(playerName);
 		this.playerName = playerName;
-		score = 0;
 	}
 
 	public void connect(String host, int port) throws IOException {
@@ -45,7 +43,7 @@ public class Client implements Observer {
 		if (packet.getType() != NetPacket.Type.ACKNOWLEDGE) {
 			throw new IOException();
 		}
-		
+
 		// Send player name.
 		packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
 		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
@@ -100,14 +98,8 @@ public class Client implements Observer {
 		gui.moveEnemies();
 	}
 
-	public String getName() {
-		return playerName;
-	}
-
 	public void increaseScore(String playerName) {
-		// FIXME add score to correct player.
-
-		score += SCORE_PER_WORD;
+		gui.increasePlayerScore(playerName, SCORE_PER_WORD);
 	}
 
 	public void showMessage(String message) {
