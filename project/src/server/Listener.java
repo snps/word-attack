@@ -6,6 +6,7 @@ import java.io.InputStream;
 import net.NetPacket;
 import net.NetPacketReader;
 import net.NetPacketReaderTimeoutException;
+import enemy.Enemy;
 
 public class Listener extends Thread {
 	public static final int READ_INTERVAL = 100;
@@ -53,6 +54,7 @@ public class Listener extends Thread {
 				String word = packet.getPacketElementContent(NetPacket.PLAYER_INPUT_TAG);
 				String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
 				if (clientMonitor.enemyWordExists(word)) {
+					clientMonitor.removeEnemy(new Enemy(word, 0, 0));
 					packet = new NetPacket(NetPacket.Type.DESTROY_ENEMY);
 					packet.addPacketElement(NetPacket.WORD_TAG, word);
 					packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
@@ -61,6 +63,7 @@ public class Listener extends Thread {
 			} else if (type == NetPacket.Type.NEW_PLAYER) {
 				clientMonitor.sendPacketToAllClients(packet);
 			} else if (type == NetPacket.Type.START_GAME) {
+				clientMonitor.startEnemyGenerator();
 				clientMonitor.sendPacketToAllClients(packet);
 			} else if (type == NetPacket.Type.DISCONNECT_FROM_GAME) {
 				interrupt();

@@ -12,6 +12,7 @@ import enemy.Enemy;
 public class ClientMonitor {
 	private List<ClientConnection> connections;
 	private HashSet<Enemy> enemies;
+	private EnemyGenerator generator;
 
 	public ClientMonitor() {
 		connections = new ArrayList<ClientConnection>();
@@ -28,11 +29,21 @@ public class ClientMonitor {
 		connections.remove(connection);
 		notifyAll();
 
+		if (connections.isEmpty()) {
+			generator.interrupt();
+			enemies.clear();
+		}
+
 		System.out.println(connections.size() + "/" + Server.MAX_CLIENTS + " connection slots used");
 	}
 
 	public synchronized int size() {
 		return connections.size();
+	}
+
+	public void startEnemyGenerator() {
+		generator = new EnemyGenerator(this);
+		generator.start();
 	}
 
 	public synchronized void addEnemy(Enemy enemy) {
@@ -50,6 +61,8 @@ public class ClientMonitor {
 			enemy.move();
 
 			if (enemy.getYPos() >= 485) {
+				generator.interrupt();
+
 				try {
 					sendPacketToAllClients(new NetPacket(NetPacket.Type.GAME_OVER));
 				} catch (IOException e) {
