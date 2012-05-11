@@ -23,6 +23,7 @@ public class ServerStub extends Thread {
 
 		try {
 			ServerSocket server = new ServerSocket(port);
+			System.out.println("Server stub now listening on port " + port);
 			Socket socket = server.accept();
 			server.close();
 			writer = new NetPacketWriter(socket.getOutputStream());
@@ -30,7 +31,7 @@ public class ServerStub extends Thread {
 			System.err.println("Could not create server socket!");
 			return;
 		}
-		
+
 		WordFileReader wfr = null;
 		try {
 			wfr = new WordFileReader("words/words3.txt");
@@ -38,7 +39,7 @@ public class ServerStub extends Thread {
 			System.err.println("Word file not found!");
 			return;
 		}
-		
+
 		List<String> wordlist = wfr.readWords();
 
 		try {
