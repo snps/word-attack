@@ -11,9 +11,9 @@ public class ClientTest {
 		Gui gui = new PlayBoard();
 		Client client = new Client(gui, "Player 1");
 		
-		ServerStub stub = new ServerStub(4444);
-		stub.setDaemon(true);
-		stub.start();
+//		ServerStub stub = new ServerStub(4444);
+//		stub.setDaemon(true);
+//		stub.start();
 		
 		try {
 			Thread.sleep(1000);
@@ -26,5 +26,7 @@ public class ClientTest {
 		} catch (IOException e) {
 			System.err.println("Could not connect to server!");
 		}
+		
+		client.sendStartRequest();
 	}
 }
