@@ -64,7 +64,9 @@ public class PlayBoard extends Gui implements ActionListener {
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panel.add(wordPanel, BorderLayout.CENTER);
 		panel.add(inputPanel, BorderLayout.SOUTH);
+	}
 
+	public void createGui() {
 		// Create frame.
 		frame = new JFrame(PROGRAM_TITLE + " v" + PROGRAM_VERSION);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -142,7 +144,7 @@ public class PlayBoard extends Gui implements ActionListener {
 		public void windowClosing(WindowEvent e) {
 			setChanged();
 			notifyObservers("disconnect");
-			
+
 			System.exit(0);
 		}
 	}

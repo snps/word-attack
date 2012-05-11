@@ -6,11 +6,21 @@ import enemy.Enemy;
 
 /**
  * <p>
- * Abstract superclass for the <i>graphical user interface</i>. All Gui implementations
- * must inherit from this.
+ * Abstract superclass for the <i>graphical user interface</i>. All Gui
+ * implementations must inherit from this.
  * </p>
  */
 public abstract class Gui extends Observable {
+	/**
+	 * <p>
+	 * <code>public void createGui()</code>
+	 * </p>
+	 * <p>
+	 * Creates and displays the Gui on screen.
+	 * </p>
+	 */
+	public abstract void createGui();
+
 	/**
 	 * <p>
 	 * <code>public String getPlayerInput()</code>
