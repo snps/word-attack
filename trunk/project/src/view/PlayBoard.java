@@ -71,6 +71,7 @@ public class PlayBoard extends Gui implements ActionListener {
 		frame.add(panel);
 		frame.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
 		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.addWindowListener(new WindowHandler());
 		frame.setVisible(true);
 	}
