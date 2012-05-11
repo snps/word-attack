@@ -47,7 +47,8 @@ public class Listener extends Thread {
 		NetPacket.Type type = packet.getType();
 
 		if (type == NetPacket.Type.START_GAME) {
-			client.startGame();
+			System.out.println("Game commencing...");
+			client.displayGame();
 		} else if (type == NetPacket.Type.NEW_PLAYER) {
 			String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
 
