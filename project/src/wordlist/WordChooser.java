@@ -23,25 +23,38 @@ public class WordChooser {
 	}
 
 	public boolean hasAvailableWord() {
-		if(chosenWords.isEmpty()){
+	
+		if(wordlist.isEmpty()){
+			return false;
+		}
+		if(chosenWords.isEmpty() && !wordlist.isEmpty()){
 			return true;
 		}
+		boolean wordOk = false;
 		int n = 0;
-		while (n < chosenWords.size()) {
-			String word = chosenWords.get(n);
+		while (n < wordlist.size()-1) {
+			String word = wordlist.get(n);
 			int m = 0;
-			while(m < wordlist.size()) {
-				if(word.charAt(0) != wordlist.get(m).charAt(0)) {
-					return true;
-				}
+			while(m < chosenWords.size()-1) {
+				if(word.charAt(0) == chosenWords.get(m).charAt(0)) {
+					wordOk = false;
+					break;
+				} 
 				m++;
+				wordOk = true;
+			}
+			if(wordOk) {
+				return true;
 			}
 			n++;
 		}
 		return false;
 	}
 
-	public String getNextWord() {
+	public String getNextWord() {	
+		if(wordlist.isEmpty()) {
+			return null;
+		}
 		Random rand = new Random();
 		int index = rand.nextInt(wordlist.size());
 		String word = wordlist.get(index);
@@ -49,12 +62,13 @@ public class WordChooser {
 			chosenWords.add(word);
 			return word;
 		} else {
-			index = rand.nextInt(wordlist.size());
-			word = wordlist.get(index);
 			while(hasAvailableWord()) {
-				if(chosenWords.get(index).charAt(0) != word.charAt(0)){
+				if(chosenWords.get(index).charAt(0) == word.charAt(0)){
 					chosenWords.add(word);
 					return word;
+				} else {
+					index = rand.nextInt(wordlist.size());
+					word = wordlist.get(index);
 				}
 			}
 		}
@@ -62,6 +76,7 @@ public class WordChooser {
 	}
 
 	public void giveBackWord(String word) {
-		// TODO
+		chosenWords.remove(word);
 	}
+		
 }
