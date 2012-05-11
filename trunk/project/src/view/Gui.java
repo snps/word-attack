@@ -35,6 +35,50 @@ public abstract class Gui extends Observable {
 
 	/**
 	 * <p>
+	 * <code>public void addPlayer(String playerName)</code>
+	 * </p>
+	 * <p>
+	 * Adds a new player with the specified name, to keep score of to the Gui.
+	 * Does nothing if the player already exists.
+	 * </p>
+	 * 
+	 * @param playerName
+	 *            the name of the player to add.
+	 */
+	public abstract void addPlayer(String playerName);
+
+	/**
+	 * <p>
+	 * <code>public void removePlayer(String playerName)</code>
+	 * </p>
+	 * <p>
+	 * Removes the specified player from the Gui. Does nothing if the player
+	 * already exists.
+	 * </p>
+	 * 
+	 * @param playerName
+	 *            the name of the player.
+	 */
+	public abstract void removePlayer(String playerName);
+
+	/**
+	 * <p>
+	 * <code>public void increasePlayerScore(String playerName, int amount)</code>
+	 * </p>
+	 * <p>
+	 * Increases the score of the specified player with the specified amount of
+	 * points.
+	 * </p>
+	 * 
+	 * @param playerName
+	 *            the name of the player.
+	 * @param amount
+	 *            the amount of points.
+	 */
+	public abstract void increasePlayerScore(String playerName, int amount);
+
+	/**
+	 * <p>
 	 * <code>public void moveEnemies()</code>
 	 * </p>
 	 * <p>
