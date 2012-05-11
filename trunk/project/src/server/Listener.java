@@ -1,8 +1,8 @@
 package server;
 
-public class ClientListener extends Thread {
+public class Listener extends Thread {
 
-	public ClientListener(WordMonitor words) {
+	public Listener(EnemyMonitor words) {
 		// TODO Auto-generated constructor stub
 	}
 	
