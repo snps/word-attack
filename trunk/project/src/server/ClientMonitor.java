@@ -1,6 +1,6 @@
 package server;
 
-public class EnemyMonitor {
+public class ClientMonitor {
 
 	public Object getWord() {
 		// TODO Auto-generated method stub
