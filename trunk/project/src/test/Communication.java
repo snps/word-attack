@@ -1,20 +1,20 @@
 package test;
 
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 
-import server.*;
-import view.*;
-import client.*;
+import server.EnemyMonitor;
+import view.Gui;
+import client.Client;
+import server.Listener;
 import enemy.Enemy;
 
 public class Communication {
 
 	@Test
 	public void clientSendsDog() {
-		WordMonitor words = new WordMonitor();
-		ClientListener clientListener = new ClientListener(words);
+		EnemyMonitor words = new EnemyMonitor();
+		Listener clientListener = new Listener(words);
 		clientListener.start();
 		
 		Gui gui = new DogGui();
