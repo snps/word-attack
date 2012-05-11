@@ -8,7 +8,6 @@ import java.util.Observer;
 import net.NetPacket;
 import net.NetPacketWriter;
 import view.Gui;
-import view.PlayBoard;
 import enemy.Enemy;
 
 public class Client implements Observer {
@@ -18,15 +17,14 @@ public class Client implements Observer {
 	private Socket socket;
 	private Listener listener;
 
-	private String name;
+	private String playerName;
 	private int score;
 
-	public Client(String name) {
-		PlayBoard pb = new PlayBoard(this);
-		pb.addObserver(this);
-		gui = pb;
+	public Client(Gui gui, String playerName) {
+		this.gui = gui;
+		this.gui.addObserver(this);
 
-		this.name = name;
+		this.playerName = playerName;
 		score = 0;
 	}
 
@@ -42,7 +40,7 @@ public class Client implements Observer {
 
 	public synchronized void disconnect() throws IOException {
 		System.out.println("Disconnecting client...");
-		
+
 		// Stop listener.
 		listener.interrupt();
 
@@ -72,7 +70,7 @@ public class Client implements Observer {
 	}
 
 	public String getName() {
-		return name;
+		return playerName;
 	}
 
 	public void increaseScore(String playerName) {
@@ -87,6 +85,18 @@ public class Client implements Observer {
 
 	@Override
 	public void update(Observable obs, Object o) {
+		// Check for disconnect message.
+		if (o != null && o.equals("disconnect")) {
+			try {
+				disconnect();
+			} catch (IOException e) {
+				System.err.println("Failed to disconnect!");
+			}
+
+			return;
+		}
+
+		// Get player input.
 		String input = gui.getPlayerInput();
 
 		// Create packet and append player input.
