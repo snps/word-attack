@@ -142,7 +142,9 @@ public class PlayBoard extends Gui implements ActionListener {
 
 	public void removeEnemy(Enemy enemy) {
 		if (enemies.containsKey(enemy)) {
-			panel.remove(enemies.get(enemy));
+			JLabel label = enemies.get(enemy);
+			label.setVisible(false);
+			wordPanel.remove(label);
 			enemies.remove(enemy);
 			panel.revalidate();
 		}
