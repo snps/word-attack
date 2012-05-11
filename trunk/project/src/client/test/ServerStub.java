@@ -22,6 +22,17 @@ public class ServerStub extends Thread {
 	public void run() {
 		NetPacketWriter writer = null;
 
+		Thread timer = new Thread(new Runnable() {
+			public void run() {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					// Nothing.
+				}
+			}
+		});
+		timer.start();
+
 		try {
 			ServerSocket server = new ServerSocket(port);
 			System.out.println("Server stub now listening on port " + port);
@@ -80,11 +91,18 @@ public class ServerStub extends Thread {
 				packet = new NetPacket(NetPacket.Type.MOVE_ENEMIES);
 				writer.writePacket(packet);
 				Thread.sleep(500);
+
+				if (!timer.isAlive()) {
+					writer.writePacket(new NetPacket(NetPacket.Type.GAME_OVER));
+					interrupt();
+				}
 			}
 		} catch (IOException e) {
 			System.err.println("Could not write packet to client!");
 		} catch (InterruptedException e) {
 			// Nothing
 		}
+
+		System.out.println("Server terminated.");
 	}
 }
