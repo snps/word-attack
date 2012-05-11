@@ -24,6 +24,12 @@ public class Communication {
 	}
 	
 	private class DogGui extends Gui {
+		
+		@Override
+		public void createGui() {
+			// TODO Auto-generated method stub
+			
+		}
 
 		@Override
 		public String getPlayerInput() {
