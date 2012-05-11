@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import net.NetPacket;
+import net.NetPacketReader;
 import net.NetPacketWriter;
 import view.Gui;
 import enemy.Enemy;
@@ -30,17 +31,26 @@ public class Client implements Observer {
 
 	public void connect(String host, int port) throws IOException {
 		System.out.println("Connecting to server " + host + " on port " + port);
-		
+
 		// Connect to host.
 		socket = new Socket(host, port);
-		
+
+		// Exchange acknowledgments (to ensure connection to the correct server).
+		// XXX Add security check: game version.
+		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
+		NetPacketReader reader = new NetPacketReader(socket.getInputStream());
+		writer.writePacket(new NetPacket(NetPacket.Type.ACKNOWLEDGE));
+		NetPacket packet = reader.readPacket();
+		if (packet.getType() != NetPacket.Type.ACKNOWLEDGE) {
+			throw new IOException();
+		}
+
 		System.out.println("Client is connected to server. Starting listener...");
 
 		// Create and start server listener.
 		listener = new Listener(this, socket.getInputStream());
-		listener.setDaemon(true);
 		listener.start();
-		
+
 		System.out.println("Listener started.");
 	}
 
@@ -59,6 +69,11 @@ public class Client implements Observer {
 
 		// Close connection.
 		socket.close();
+	}
+
+	public void startGame() {
+		System.out.println("Game commencing...");
+		gui.createGui();
 	}
 
 	public void createEnemy(String word, int speed, int xPos) {
