@@ -35,7 +35,8 @@ public class Client implements Observer {
 		// Connect to host.
 		socket = new Socket(host, port);
 
-		// Exchange acknowledgments (to ensure connection to the correct server).
+		// Exchange acknowledgments (to ensure connection to the correct
+		// server).
 		// XXX Add security check: game version.
 		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
 		NetPacketReader reader = new NetPacketReader(socket.getInputStream());
@@ -44,6 +45,11 @@ public class Client implements Observer {
 		if (packet.getType() != NetPacket.Type.ACKNOWLEDGE) {
 			throw new IOException();
 		}
+		
+		// Send player name.
+		packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
+		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
+		writer.writePacket(packet);
 
 		System.out.println("Client is connected to server. Starting listener...");
 
@@ -56,6 +62,10 @@ public class Client implements Observer {
 
 	public synchronized void disconnect() throws IOException {
 		System.out.println("Disconnecting client...");
+
+		// Send disconnect packet to server.
+		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
+		writer.writePacket(new NetPacket(NetPacket.Type.DISCONNECT_FROM_GAME));
 
 		// Stop listener.
 		listener.interrupt();
