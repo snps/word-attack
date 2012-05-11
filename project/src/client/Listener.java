@@ -71,6 +71,8 @@ public class Listener extends Thread {
 		} else if (type == NetPacket.Type.MOVE_ENEMIES) {
 			client.moveEnemies();
 		} else if (type == NetPacket.Type.GAME_OVER) {
+			System.out.println("Game over received from server.");
+
 			// Disconnect from server.
 			try {
 				client.disconnect();
@@ -78,7 +80,10 @@ public class Listener extends Thread {
 				System.err.println("Could not disconnect from server!");
 			}
 
+			// Clear and reset interrupt to avoid ugly Gui interrupt messages.
+			interrupted();
 			client.showMessage("Game Over");
+			interrupt();
 		} else {
 			client.showMessage("Unknown packet received from server");
 		}

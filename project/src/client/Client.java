@@ -59,6 +59,10 @@ public class Client implements Observer {
 	}
 
 	public synchronized void disconnect() throws IOException {
+		if (socket.isClosed()) {
+			return;
+		}
+
 		System.out.println("Disconnecting client...");
 
 		// Send disconnect packet to server.
@@ -87,7 +91,7 @@ public class Client implements Observer {
 	public void addCoPlayer(String playerName) {
 		gui.addPlayer(playerName);
 	}
-	
+
 	public void removeCoPlayer(String playerName) {
 		gui.removePlayer(playerName);
 	}
