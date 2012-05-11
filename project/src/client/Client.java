@@ -44,6 +44,12 @@ public class Client implements Observer {
 		listener.start();
 
 		System.out.println("Listener started.");
+
+		// Send player name.
+		NetPacket packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
+		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
+		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
+		writer.writePacket(packet);
 	}
 
 	private void acknowledgeServer() throws IOException {
@@ -56,11 +62,6 @@ public class Client implements Observer {
 		if (packet.getType() != NetPacket.Type.ACKNOWLEDGE) {
 			throw new IOException();
 		}
-
-		// Send player name.
-		packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
-		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
-		writer.writePacket(packet);
 	}
 
 	public synchronized void disconnect() throws IOException {
@@ -94,7 +95,9 @@ public class Client implements Observer {
 	}
 
 	public void addCoPlayer(String playerName) {
-		gui.addPlayer(playerName);
+		if (!playerName.equals(this.playerName)) {
+			gui.addPlayer(playerName);
+		}
 	}
 
 	public void removeCoPlayer(String playerName) {
@@ -142,6 +145,7 @@ public class Client implements Observer {
 		// Create packet and append player input.
 		NetPacket packet = new NetPacket(NetPacket.Type.PLAYER_INPUT_UPDATE);
 		packet.addPacketElement(NetPacket.PLAYER_INPUT_TAG, input);
+		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
 
 		// Create packet writer and send packet.
 		try {
