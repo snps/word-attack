@@ -35,7 +35,20 @@ public class Client implements Observer {
 
 		// Exchange acknowledgments (to ensure connection to the correct
 		// server).
+		acknowledgeServer();
+
+		System.out.println("Client is connected to server. Starting listener...");
+
+		// Create and start server listener.
+		listener = new Listener(this, socket.getInputStream());
+		listener.start();
+
+		System.out.println("Listener started.");
+	}
+
+	private void acknowledgeServer() throws IOException {
 		// XXX Add security check: game version.
+		// Exchange acknowledgments
 		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
 		NetPacketReader reader = new NetPacketReader(socket.getInputStream());
 		writer.writePacket(new NetPacket(NetPacket.Type.ACKNOWLEDGE));
@@ -48,14 +61,6 @@ public class Client implements Observer {
 		packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
 		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
 		writer.writePacket(packet);
-
-		System.out.println("Client is connected to server. Starting listener...");
-
-		// Create and start server listener.
-		listener = new Listener(this, socket.getInputStream());
-		listener.start();
-
-		System.out.println("Listener started.");
 	}
 
 	public synchronized void disconnect() throws IOException {
