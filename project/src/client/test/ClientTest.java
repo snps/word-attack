@@ -2,11 +2,14 @@ package client.test;
 
 import java.io.IOException;
 
+import view.Gui;
+import view.PlayBoard;
 import client.Client;
 
 public class ClientTest {
 	public static void main(String[] args) {
-		Client client = new Client("Player 1");
+		Gui gui = new PlayBoard();
+		Client client = new Client(gui, "Player 1");
 		
 		ServerStub stub = new ServerStub(4444);
 		stub.setDaemon(true);
