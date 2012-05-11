@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.List;
 
 import net.NetPacket;
+import net.NetPacketReader;
 import net.NetPacketWriter;
 import wordlist.WordFileReader;
 import enemy.Enemy;
@@ -27,8 +28,19 @@ public class ServerStub extends Thread {
 			Socket socket = server.accept();
 			server.close();
 			writer = new NetPacketWriter(socket.getOutputStream());
+
+			// Exchange acknowledgments.
+			NetPacketReader reader = new NetPacketReader(socket.getInputStream());
+			NetPacket packet = reader.readPacket();
+			if (packet.getType() != NetPacket.Type.ACKNOWLEDGE) {
+				throw new IOException();
+			}
+			writer.writePacket(new NetPacket(NetPacket.Type.ACKNOWLEDGE));
+
+			// Start game.
+			writer.writePacket(new NetPacket(NetPacket.Type.START_GAME));
 		} catch (IOException e) {
-			System.err.println("Could not create server socket!");
+			System.err.println("Server: client connect failed!");
 			return;
 		}
 
