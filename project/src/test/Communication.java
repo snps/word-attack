@@ -3,7 +3,7 @@ package test;
 
 import org.junit.Test;
 
-import server.EnemyMonitor;
+import server.ClientMonitor;
 import view.Gui;
 import client.Client;
 import server.Listener;
@@ -13,7 +13,7 @@ public class Communication {
 
 	@Test
 	public void clientSendsDog() {
-		EnemyMonitor words = new EnemyMonitor();
+		ClientMonitor words = new ClientMonitor();
 		Listener clientListener = new Listener(words);
 		clientListener.start();
 		
