@@ -1,14 +1,16 @@
 package view;
 
+import java.util.Observable;
+
 import enemy.Enemy;
 
 /**
  * <p>
- * Interface for the <i>graphical user interface</i>. All Gui implementations
- * must implement this.
+ * Abstract superclass for the <i>graphical user interface</i>. All Gui implementations
+ * must inherit from this.
  * </p>
  */
-public interface Gui {
+public abstract class Gui extends Observable {
 	/**
 	 * <p>
 	 * <code>public String getPlayerInput()</code>
@@ -19,7 +21,7 @@ public interface Gui {
 	 * 
 	 * @return the player input text as a String.
 	 */
-	public String getPlayerInput();
+	public abstract String getPlayerInput();
 
 	/**
 	 * <p>
@@ -29,7 +31,7 @@ public interface Gui {
 	 * Move all enemies known to Gui.
 	 * </p>
 	 */
-	public void moveEnemies();
+	public abstract void moveEnemies();
 
 	/**
 	 * <p>
@@ -40,7 +42,7 @@ public interface Gui {
 	 * @param enemy
 	 *            the enemy to add.
 	 */
-	public void addEnemy(Enemy enemy);
+	public abstract void addEnemy(Enemy enemy);
 
 	/**
 	 * <p>
@@ -51,7 +53,7 @@ public interface Gui {
 	 * @param enemy
 	 *            the enemy to remove.
 	 */
-	public void removeEnemy(Enemy enemy);
+	public abstract void removeEnemy(Enemy enemy);
 
 	/**
 	 * <p>
@@ -62,5 +64,5 @@ public interface Gui {
 	 * @param message
 	 *            the message to show.
 	 */
-	public void showMessage(String message);
+	public abstract void showMessage(String message);
 }
