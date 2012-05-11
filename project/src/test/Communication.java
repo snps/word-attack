@@ -60,6 +60,24 @@ public class Communication {
 			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public void addPlayer(String playerName) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void increasePlayerScore(String playerName, int amount) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void removePlayer(String playerName) {
+			// TODO Auto-generated method stub
+			
+		}
 		
 	}
 }
