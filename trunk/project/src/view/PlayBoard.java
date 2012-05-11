@@ -51,8 +51,6 @@ public class PlayBoard extends Gui implements ActionListener {
 		wordPanel = new JPanel();
 		wordPanel.setLayout(null);
 		wordPanel.setBorder(new LineBorder(Color.BLACK, 1));
-		wordPanel.add(playerInputField);
-		wordPanel.add(sendButton);
 
 		// Create score panel.
 		scorePanel = new JPanel();
@@ -102,17 +100,20 @@ public class PlayBoard extends Gui implements ActionListener {
 		PlayerScorePanel playerPanel = new PlayerScorePanel(playerName);
 		players.put(playerName, playerPanel);
 		scorePanel.add(playerPanel);
+		panel.revalidate();
 	}
 
 	public void removePlayer(String playerName) {
 		PlayerScorePanel playerPanel = players.get(playerName);
 		scorePanel.remove(playerPanel);
 		players.remove(playerName);
+		panel.revalidate();
 	}
 
 	public void increasePlayerScore(String playerName, int amount) {
 		if (players.containsKey(playerName)) {
 			players.get(playerName).addScore(amount);
+			panel.revalidate();
 		}
 	}
 
