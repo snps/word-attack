@@ -107,15 +107,20 @@ public class NetPacketReader {
 			}
 		}
 
-		// Read length of length bytes.
-		byte[] lenBytes1 = readBytesFromStream(2);
-		// Get integer length of length.
-		int lengthOfLength = Integer.parseInt(new String(lenBytes1));
+		int length = 0;
+		try {
+			// Read length of length bytes.
+			byte[] lenBytes1 = readBytesFromStream(2);
+			// Get integer length of length.
+			int lengthOfLength = Integer.parseInt(new String(lenBytes1));
 
-		// Read length bytes.
-		byte[] lenBytes2 = readBytesFromStream(lengthOfLength);
-		// Get integer length.
-		int length = Integer.parseInt(new String(lenBytes2));
+			// Read length bytes.
+			byte[] lenBytes2 = readBytesFromStream(lengthOfLength);
+			// Get integer length.
+			length = Integer.parseInt(new String(lenBytes2));
+		} catch (NumberFormatException e) {
+			throw new IOException();
+		}
 
 		// Read data
 		byte[] data = readBytesFromStream(length);
