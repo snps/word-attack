@@ -18,12 +18,12 @@ public class Communication {
 		clientListener.start();
 		
 		Gui gui = new DogGui();
-		Client client = new Client("Player 1");	//behövs gui?
+		Client client = new Client(gui, "Player 1");	//behövs gui?
 		client.update(null, null);
 //		assertEquals("dog", words.getWord());
 	}
 	
-	private class DogGui implements Gui {
+	private class DogGui extends Gui {
 
 		@Override
 		public String getPlayerInput() {
