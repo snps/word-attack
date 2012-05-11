@@ -30,13 +30,16 @@ public class PlayBoard extends Gui implements ActionListener {
 	private JFrame frame;
 	private JPanel panel;
 	private JPanel wordPanel;
+	private JPanel scorePanel;
 	private JTextField playerInputField;
 	private JButton sendButton;
 
 	private HashMap<Enemy, JLabel> enemies;
+	private HashMap<String, PlayerScorePanel> players;
 
 	public PlayBoard() {
 		enemies = new HashMap<Enemy, JLabel>();
+		players = new HashMap<String, PlayerScorePanel>();
 
 		// Create components.
 		playerInputField = new JTextField(20);
@@ -51,6 +54,9 @@ public class PlayBoard extends Gui implements ActionListener {
 		wordPanel.add(playerInputField);
 		wordPanel.add(sendButton);
 
+		// Create score panel.
+		scorePanel = new JPanel();
+
 		// Create player input panel.
 		JPanel inputPanel = new JPanel();
 		inputPanel.setLayout(new BorderLayout());
@@ -58,12 +64,18 @@ public class PlayBoard extends Gui implements ActionListener {
 		inputPanel.add(playerInputField, BorderLayout.CENTER);
 		inputPanel.add(sendButton, BorderLayout.EAST);
 
+		// Create bottom panel (score + player input panels).
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.setLayout(new BorderLayout());
+		bottomPanel.add(scorePanel, BorderLayout.CENTER);
+		bottomPanel.add(inputPanel, BorderLayout.SOUTH);
+
 		// Main panel
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panel.add(wordPanel, BorderLayout.CENTER);
-		panel.add(inputPanel, BorderLayout.SOUTH);
+		panel.add(bottomPanel, BorderLayout.SOUTH);
 	}
 
 	public void createGui() {
@@ -84,6 +96,24 @@ public class PlayBoard extends Gui implements ActionListener {
 
 	public String getPlayerInput() {
 		return playerInputField.getText();
+	}
+
+	public void addPlayer(String playerName) {
+		PlayerScorePanel playerPanel = new PlayerScorePanel(playerName);
+		players.put(playerName, playerPanel);
+		scorePanel.add(playerPanel);
+	}
+
+	public void removePlayer(String playerName) {
+		PlayerScorePanel playerPanel = players.get(playerName);
+		scorePanel.remove(playerPanel);
+		players.remove(playerName);
+	}
+
+	public void increasePlayerScore(String playerName, int amount) {
+		if (players.containsKey(playerName)) {
+			players.get(playerName).addScore(amount);
+		}
 	}
 
 	public void moveEnemies() {
@@ -136,6 +166,29 @@ public class PlayBoard extends Gui implements ActionListener {
 
 			playerInputField.setText("");
 			playerInputField.requestFocusInWindow();
+		}
+	}
+
+	private class PlayerScorePanel extends JPanel {
+		private static final long serialVersionUID = -6411696585135193700L;
+
+		private int score;
+		private JLabel scoreLabel;
+
+		public PlayerScorePanel(String playerName) {
+			score = 0;
+			setLayout(new BorderLayout());
+			setBorder(new EmptyBorder(0, 50, 0, 50));
+			JLabel playerLabel = new JLabel(playerName);
+			scoreLabel = new JLabel(Integer.toString(score));
+
+			add(playerLabel, BorderLayout.CENTER);
+			add(scoreLabel, BorderLayout.SOUTH);
+		}
+
+		public void addScore(int amount) {
+			score += amount;
+			scoreLabel.setText(Integer.toString(score));
 		}
 	}
 
