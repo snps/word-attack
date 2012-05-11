@@ -39,7 +39,7 @@ public class Listener extends Thread {
 				handlePacket(packet);
 			}
 		}
-		
+
 		System.out.println("Listener terminated");
 	}
 
@@ -48,6 +48,10 @@ public class Listener extends Thread {
 
 		if (type == NetPacket.Type.START_GAME) {
 			client.startGame();
+		} else if (type == NetPacket.Type.NEW_PLAYER) {
+			String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
+
+			client.addCoPlayer(playerName);
 		} else if (type == NetPacket.Type.CREATE_ENEMY) {
 			String word = packet.getPacketElementContent(NetPacket.WORD_TAG);
 			int speed = Integer.parseInt(packet.getPacketElementContent(NetPacket.SPEED_TAG));
