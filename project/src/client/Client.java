@@ -89,8 +89,17 @@ public class Client implements Observer {
 		socket.close();
 	}
 
-	public void startGame() {
-		System.out.println("Game commencing...");
+	public void sendStartRequest() {
+		NetPacket packet = new NetPacket(NetPacket.Type.START_GAME);
+		try {
+			NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
+			writer.writePacket(packet);
+		} catch (IOException e) {
+			System.err.println("Client could not write packet to server!");
+		}
+	}
+
+	public void displayGame() {
 		gui.createGui();
 	}
 
