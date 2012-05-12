@@ -65,7 +65,9 @@ public class Client implements Observer {
 
 	public void requestDisconnect() throws IOException {
 		// Send disconnect packet to server.
-		sendPacketToServer(new NetPacket(NetPacket.Type.DISCONNECT_FROM_GAME));
+		NetPacket packet = new NetPacket(NetPacket.Type.DISCONNECT_FROM_GAME);
+		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
+		sendPacketToServer(packet);
 	}
 
 	public synchronized void disconnect() throws IOException {
