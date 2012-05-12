@@ -99,6 +99,12 @@ public class Client implements Observer {
 		}
 	}
 
+	public void sendPlayerName() throws IOException {
+		NetPacket packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
+		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
+		sendPacketToServer(packet);
+	}
+
 	public synchronized void sendPacketToServer(NetPacket packet) throws IOException {
 		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
 		writer.writePacket(packet);
@@ -117,7 +123,7 @@ public class Client implements Observer {
 	public void removeCoPlayer(String playerName) {
 		gui.removePlayer(playerName);
 	}
-	
+
 	public boolean hasCoPlayer(String playerName) {
 		return gui.hasPlayer(playerName);
 	}

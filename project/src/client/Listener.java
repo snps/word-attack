@@ -60,10 +60,8 @@ public class Listener extends Thread {
 				client.addCoPlayer(playerName);
 
 				// Resent client player name to server.
-				packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
-				packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
 				try {
-					client.sendPacketToServer(packet);
+					client.sendPlayerName();
 				} catch (IOException e) {
 					System.err.println("Failed to resend player name!");
 				}
