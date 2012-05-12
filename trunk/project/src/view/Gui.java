@@ -63,6 +63,21 @@ public abstract class Gui extends Observable {
 
 	/**
 	 * <p>
+	 * <code>public boolean hasPlayer(String playerName)</code>
+	 * </p>
+	 * <p>
+	 * Returns true if Gui has the player with the specified player name
+	 * registered.
+	 * </p>
+	 * 
+	 * @param playerName
+	 *            the player name
+	 * @return true if player is registered, false otherwise.
+	 */
+	public abstract boolean hasPlayer(String playerName);
+
+	/**
+	 * <p>
 	 * <code>public void increasePlayerScore(String playerName, int amount)</code>
 	 * </p>
 	 * <p>
