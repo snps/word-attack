@@ -65,6 +65,12 @@ public class Client implements Observer {
 		}
 	}
 
+	public void requestDisconnect() throws IOException {
+		// Send disconnect packet to server.
+		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
+		writer.writePacket(new NetPacket(NetPacket.Type.DISCONNECT_FROM_GAME));
+	}
+
 	public synchronized void disconnect() throws IOException {
 		if (socket.isClosed()) {
 			return;
@@ -72,18 +78,16 @@ public class Client implements Observer {
 
 		System.out.println("Disconnecting client...");
 
-		// Send disconnect packet to server.
-		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
-		writer.writePacket(new NetPacket(NetPacket.Type.DISCONNECT_FROM_GAME));
-
 		// Stop listener.
 		listener.interrupt();
 
-		// Give listener some time to terminate.
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
+		// Wait for listener if other thread.
+		if (Thread.currentThread() != listener) {
+			try {
+				listener.join();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
 		}
 
 		// Close connection.
@@ -140,10 +144,22 @@ public class Client implements Observer {
 	public void update(Observable obs, Object o) {
 		// Check for disconnect message.
 		if (o != null && o.equals("disconnect")) {
+			if (!listener.isAlive()) {
+				return;
+			}
+			
 			try {
-				disconnect();
+				// Send disconnect request.
+				requestDisconnect();
 			} catch (IOException e) {
-				System.err.println("Failed to disconnect!");
+				System.err.println("Client failed to send disconnect request!");
+			}
+
+			// Wait for listener to terminate.
+			try {
+				listener.join();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 			}
 
 			return;
