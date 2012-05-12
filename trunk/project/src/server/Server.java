@@ -4,21 +4,25 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import net.NetPacket;
+
 public class Server extends Thread {
 	public static final int MAX_CLIENTS = 4;
 
 	private int port;
-	private ClientMonitor clients;
+	private int nbrOfPlayers;
+	private ClientMonitor clientMonitor;
 
-	public Server(int port) {
+	public Server(int port, int nbrOfPlayers) {
 		this.port = port;
-		clients = new ClientMonitor();
+		this.nbrOfPlayers = nbrOfPlayers;
+		clientMonitor = new ClientMonitor();
 	}
 
 	@Override
 	public void run() {
 		while (!isInterrupted()) {
-			while (!isInterrupted() && clients.size() < MAX_CLIENTS) {
+			while (!isInterrupted() && clientMonitor.size() < MAX_CLIENTS) {
 				ServerSocket server = null;
 				try {
 					server = new ServerSocket(port);
@@ -32,15 +36,20 @@ public class Server extends Thread {
 					Socket socket = server.accept();
 					server.close();
 
-					ClientConnection connection = new ClientConnection(clients, socket);
-					clients.addClientConnection(connection);
+					ClientConnection connection = new ClientConnection(clientMonitor, socket);
+					clientMonitor.addClientConnection(connection);
+
+					// Send start game when enough players have joined.
+					if (clientMonitor.size() >= nbrOfPlayers && !clientMonitor.isRunningGame()) {
+						clientMonitor.sendPacketToAllClients(new NetPacket(NetPacket.Type.START_GAME));
+					}
 
 					System.out.println("Client connected from " + socket.getInetAddress().toString());
 				} catch (IOException e) {
 					System.err.println("Server could not open connection to client!");
 				}
 			}
-			clients.waitForDisconnect();
+			clientMonitor.waitForDisconnect();
 		}
 	}
 }
