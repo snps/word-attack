@@ -26,12 +26,8 @@ public class ClientConnection {
 	public void disconnect() throws IOException {
 		clientMonitor.removeClientConnection(this);
 
-		// Give listener some time to terminate.
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+		// Send disconnect response to client.
+		sendPacket(new NetPacket(NetPacket.Type.DISCONNECT_FROM_GAME));
 
 		// Close connection.
 		socket.close();
