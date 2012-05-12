@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import server.Server;
 import client.Client;
@@ -40,19 +41,22 @@ public class ConnectBox implements ActionListener {
 		// Player name panel.
 		JPanel namePanel = new JPanel();
 		namePanel.setLayout(new BorderLayout());
+		namePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		namePanel.add(nameLabel, BorderLayout.CENTER);
 		namePanel.add(nameField, BorderLayout.SOUTH);
 
 		// Button panel.
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
+		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		buttonPanel.add(joinButton, BorderLayout.CENTER);
 		buttonPanel.add(hostButton, BorderLayout.EAST);
 
 		// Main panel.
 		panel = new JPanel();
-		panel.add(namePanel, BorderLayout.CENTER);
-		panel.add(buttonPanel, BorderLayout.SOUTH);
+		panel.setLayout(new BorderLayout());
+		panel.add(namePanel, BorderLayout.NORTH);
+		panel.add(buttonPanel, BorderLayout.CENTER);
 
 		// Create frame.
 		frame = new JFrame(PROGRAM_TITLE);
