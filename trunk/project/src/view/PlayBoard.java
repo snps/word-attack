@@ -197,10 +197,11 @@ public class PlayBoard extends Gui implements ActionListener {
 
 	private class WindowHandler extends WindowAdapter {
 		@Override
-		public void windowClosing(WindowEvent e) {
+		public void windowClosing(WindowEvent event) {
 			setChanged();
 			notifyObservers("disconnect");
 
+			// Exit program.
 			System.exit(0);
 		}
 	}
