@@ -117,6 +117,10 @@ public class Client implements Observer {
 	public void removeCoPlayer(String playerName) {
 		gui.removePlayer(playerName);
 	}
+	
+	public boolean hasCoPlayer(String playerName) {
+		return gui.hasPlayer(playerName);
+	}
 
 	public void createEnemy(String word, int speed, int xPos) {
 		Enemy enemy = new Enemy(word, speed, xPos);
