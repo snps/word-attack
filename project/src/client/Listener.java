@@ -7,6 +7,10 @@ import net.NetPacket;
 import net.NetPacketReader;
 import net.NetPacketReaderTimeoutException;
 
+/**
+ * Client listener
+ *
+ */
 public class Listener extends Thread {
 	public static final int READ_INTERVAL = 100;
 
@@ -73,18 +77,23 @@ public class Listener extends Thread {
 			client.moveEnemies();
 		} else if (type == NetPacket.Type.GAME_OVER) {
 			System.out.println("Game over received from server.");
+			
+			// Send disconnect request.
+			try {
+				client.requestDisconnect();
+			} catch (IOException e) {
+				System.err.println("Client failed to send disconnect request!");
+			}
 
+			// Show Game Over message in Gui.
+			client.showMessage("Game Over");
+		} else if(type == NetPacket.Type.DISCONNECT_FROM_GAME) {
 			// Disconnect from server.
 			try {
 				client.disconnect();
 			} catch (IOException e) {
 				System.err.println("Could not disconnect from server!");
 			}
-
-			// Clear and reset interrupt to avoid ugly Gui interrupt messages.
-			interrupted();
-			client.showMessage("Game Over");
-			interrupt();
 		} else {
 			client.showMessage("Unknown packet received from server");
 		}
