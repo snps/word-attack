@@ -23,7 +23,7 @@ public class ClientTest {
 
 		try {
 			client.connect("localhost", 4444);
-			client.sendStartRequest();
+			//client.sendStartRequest();
 		} catch (IOException e) {
 			System.err.println("Could not connect to server!");
 		}
