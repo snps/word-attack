@@ -49,16 +49,14 @@ public class Client implements Observer {
 		// Send player name.
 		NetPacket packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
 		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
-		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
-		writer.writePacket(packet);
+		sendPacketToServer(packet);
 	}
 
 	private void acknowledgeServer() throws IOException {
 		// XXX Add security check: game version.
 		// Exchange acknowledgments
-		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
 		NetPacketReader reader = new NetPacketReader(socket.getInputStream(), CONNECT_TIMEOUT);
-		writer.writePacket(new NetPacket(NetPacket.Type.ACKNOWLEDGE));
+		sendPacketToServer(new NetPacket(NetPacket.Type.ACKNOWLEDGE));
 		NetPacket packet = reader.readPacket();
 		if (packet.getType() != NetPacket.Type.ACKNOWLEDGE) {
 			throw new IOException();
@@ -67,8 +65,7 @@ public class Client implements Observer {
 
 	public void requestDisconnect() throws IOException {
 		// Send disconnect packet to server.
-		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
-		writer.writePacket(new NetPacket(NetPacket.Type.DISCONNECT_FROM_GAME));
+		sendPacketToServer(new NetPacket(NetPacket.Type.DISCONNECT_FROM_GAME));
 	}
 
 	public synchronized void disconnect() throws IOException {
@@ -95,13 +92,16 @@ public class Client implements Observer {
 	}
 
 	public void sendStartRequest() {
-		NetPacket packet = new NetPacket(NetPacket.Type.START_GAME);
 		try {
-			NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
-			writer.writePacket(packet);
+			sendPacketToServer(new NetPacket(NetPacket.Type.START_GAME));
 		} catch (IOException e) {
 			System.err.println("Client could not write packet to server!");
 		}
+	}
+
+	public synchronized void sendPacketToServer(NetPacket packet) throws IOException {
+		NetPacketWriter writer = new NetPacketWriter(socket.getOutputStream());
+		writer.writePacket(packet);
 	}
 
 	public void displayGame() {
@@ -147,7 +147,7 @@ public class Client implements Observer {
 			if (!listener.isAlive()) {
 				return;
 			}
-			
+
 			try {
 				// Send disconnect request.
 				requestDisconnect();
