@@ -56,15 +56,17 @@ public class Listener extends Thread {
 		} else if (type == NetPacket.Type.NEW_PLAYER) {
 			String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
 
-			client.addCoPlayer(playerName);
+			if (!client.hasCoPlayer(playerName)) {
+				client.addCoPlayer(playerName);
 
-			// Resent client player name.
-			packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
-			packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
-			try {
-				client.sendPacketToServer(packet);
-			} catch (IOException e) {
-				System.err.println("Failed to resend player name!");
+				// Resent client player name to server.
+				packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
+				packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
+				try {
+					client.sendPacketToServer(packet);
+				} catch (IOException e) {
+					System.err.println("Failed to resend player name!");
+				}
 			}
 		} else if (type == NetPacket.Type.REMOVE_PLAYER) {
 			String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
