@@ -108,6 +108,7 @@ public class PlayBoard extends Gui implements ActionListener {
 	public void removePlayer(String playerName) {
 		if (players.containsKey(playerName)) {
 			PlayerScorePanel playerPanel = players.get(playerName);
+			playerPanel.setVisible(false);
 			scorePanel.remove(playerPanel);
 			players.remove(playerName);
 			panel.revalidate();
