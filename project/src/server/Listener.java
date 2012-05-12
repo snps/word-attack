@@ -10,7 +10,7 @@ import enemy.Enemy;
 
 /**
  * Server listener
- *
+ * 
  */
 public class Listener extends Thread {
 	public static final int READ_INTERVAL = 100;
@@ -70,6 +70,12 @@ public class Listener extends Thread {
 				clientMonitor.startEnemyGenerator();
 				clientMonitor.sendPacketToAllClients(packet);
 			} else if (type == NetPacket.Type.DISCONNECT_FROM_GAME) {
+				// Send remove player to clients.
+				String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
+				packet = new NetPacket(NetPacket.Type.REMOVE_PLAYER);
+				packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
+				clientMonitor.sendPacketToAllClients(packet);
+
 				interrupt();
 				try {
 					connection.disconnect();
