@@ -8,6 +8,10 @@ import net.NetPacketReader;
 import net.NetPacketReaderTimeoutException;
 import enemy.Enemy;
 
+/**
+ * Server listener
+ *
+ */
 public class Listener extends Thread {
 	public static final int READ_INTERVAL = 100;
 

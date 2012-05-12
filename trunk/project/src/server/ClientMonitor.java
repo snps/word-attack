@@ -42,6 +42,15 @@ public class ClientMonitor {
 	}
 
 	public void startEnemyGenerator() {
+		if (generator != null && generator.isAlive()) {
+			generator.interrupt();
+			try {
+				generator.join();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+
 		generator = new EnemyGenerator(this);
 		generator.start();
 	}
@@ -68,6 +77,8 @@ public class ClientMonitor {
 				} catch (IOException e) {
 					System.err.println("Server could not send game over!");
 				}
+
+				break;
 			}
 		}
 	}
