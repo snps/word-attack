@@ -97,17 +97,25 @@ public class PlayBoard extends Gui implements ActionListener {
 	}
 
 	public void addPlayer(String playerName) {
-		PlayerScorePanel playerPanel = new PlayerScorePanel(playerName);
-		players.put(playerName, playerPanel);
-		scorePanel.add(playerPanel);
-		panel.revalidate();
+		if (!players.containsKey(playerName)) {
+			PlayerScorePanel playerPanel = new PlayerScorePanel(playerName);
+			players.put(playerName, playerPanel);
+			scorePanel.add(playerPanel);
+			panel.revalidate();
+		}
 	}
 
 	public void removePlayer(String playerName) {
-		PlayerScorePanel playerPanel = players.get(playerName);
-		scorePanel.remove(playerPanel);
-		players.remove(playerName);
-		panel.revalidate();
+		if (players.containsKey(playerName)) {
+			PlayerScorePanel playerPanel = players.get(playerName);
+			scorePanel.remove(playerPanel);
+			players.remove(playerName);
+			panel.revalidate();
+		}
+	}
+	
+	public boolean hasPlayer(String playerName) {
+		return players.containsKey(playerName);
 	}
 
 	public void increasePlayerScore(String playerName, int amount) {
