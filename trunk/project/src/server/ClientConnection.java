@@ -21,6 +21,11 @@ public class ClientConnection {
 		// Start client listener.
 		Listener listener = new Listener(socket.getInputStream(), this, clientMonitor);
 		listener.start();
+		
+		// Send start game if game is already running.
+		if (this.clientMonitor.isRunningGame()) {
+			sendPacket(new NetPacket(NetPacket.Type.START_GAME));
+		}
 	}
 
 	public void disconnect() throws IOException {
