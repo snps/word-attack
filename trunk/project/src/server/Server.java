@@ -42,6 +42,7 @@ public class Server extends Thread {
 					// Send start game when enough players have joined.
 					if (clientMonitor.size() >= nbrOfPlayers && !clientMonitor.isRunningGame()) {
 						clientMonitor.sendPacketToAllClients(new NetPacket(NetPacket.Type.START_GAME));
+						clientMonitor.startEnemyGenerator();
 					}
 
 					System.out.println("Client connected from " + socket.getInetAddress().toString());
