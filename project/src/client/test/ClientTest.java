@@ -9,7 +9,7 @@ import client.Client;
 public class ClientTest {
 	public static void main(String[] args) {
 		Gui gui = new PlayBoard();
-		Client client = new Client(gui, "Player 1");
+		Client client = new Client(gui, "Felix");
 
 		// ServerStub stub = new ServerStub(4444);
 		// stub.setDaemon(true);

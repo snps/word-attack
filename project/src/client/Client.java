@@ -23,8 +23,6 @@ public class Client implements Observer {
 
 	public Client(Gui gui, String playerName) {
 		this.gui = gui;
-		this.gui.addObserver(this);
-		this.gui.addPlayer(playerName);
 		this.playerName = playerName;
 	}
 
@@ -50,6 +48,10 @@ public class Client implements Observer {
 		NetPacket packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
 		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
 		sendPacketToServer(packet);
+		
+		// Register data in Gui.
+		this.gui.addObserver(this);
+		this.gui.addPlayer(playerName);
 	}
 
 	private void acknowledgeServer() throws IOException {

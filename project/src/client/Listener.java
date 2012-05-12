@@ -36,6 +36,11 @@ public class Listener extends Thread {
 				continue;
 			} catch (IOException e) {
 				System.err.println("Client listener could not read packet from server!");
+				try {
+					client.disconnect();
+				} catch (IOException e1) {
+					// Nothing.
+				}
 			}
 
 			// Handle packet.
