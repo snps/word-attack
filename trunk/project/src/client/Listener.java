@@ -9,7 +9,7 @@ import net.NetPacketReaderTimeoutException;
 
 /**
  * Client listener
- *
+ * 
  */
 public class Listener extends Thread {
 	public static final int READ_INTERVAL = 100;
@@ -57,6 +57,15 @@ public class Listener extends Thread {
 			String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
 
 			client.addCoPlayer(playerName);
+
+			// Resent client player name.
+			packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
+			packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
+			try {
+				client.sendPacketToServer(packet);
+			} catch (IOException e) {
+				System.err.println("Failed to resend player name!");
+			}
 		} else if (type == NetPacket.Type.REMOVE_PLAYER) {
 			String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
 
@@ -77,7 +86,7 @@ public class Listener extends Thread {
 			client.moveEnemies();
 		} else if (type == NetPacket.Type.GAME_OVER) {
 			System.out.println("Game over received from server.");
-			
+
 			// Send disconnect request.
 			try {
 				client.requestDisconnect();
@@ -87,7 +96,7 @@ public class Listener extends Thread {
 
 			// Show Game Over message in Gui.
 			client.showMessage("Game Over");
-		} else if(type == NetPacket.Type.DISCONNECT_FROM_GAME) {
+		} else if (type == NetPacket.Type.DISCONNECT_FROM_GAME) {
 			// Disconnect from server.
 			try {
 				client.disconnect();
