@@ -79,7 +79,7 @@ public class PlayBoard extends Gui implements ActionListener {
 	public void createGui() {
 		// Create frame.
 		frame = new JFrame(PROGRAM_TITLE + " v" + PROGRAM_VERSION);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.add(panel);
 		frame.setSize(PROGRAM_WIDTH, PROGRAM_HEIGHT);
 		frame.setResizable(false);
@@ -210,8 +210,8 @@ public class PlayBoard extends Gui implements ActionListener {
 			setChanged();
 			notifyObservers("disconnect");
 
-			// Exit program.
-			System.exit(0);
+			// Dispose frame.
+			frame.dispose();
 		}
 	}
 }
