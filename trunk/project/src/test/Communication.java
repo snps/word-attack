@@ -78,6 +78,12 @@ public class Communication {
 			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public boolean hasPlayer(String playerName) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 		
 	}
 }
