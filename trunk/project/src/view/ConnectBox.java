@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import server.Server;
 import client.Client;
@@ -74,6 +76,22 @@ public class ConnectBox implements ActionListener {
 
 	private String getStringWithDialog(String dialogText) {
 		JTextField textField = new JTextField();
+		textField.addAncestorListener(new AncestorListener() {
+			@Override
+			public void ancestorAdded(AncestorEvent event) {
+				event.getComponent().requestFocusInWindow();
+			}
+
+			@Override
+			public void ancestorMoved(AncestorEvent event) {
+				return;
+			}
+
+			@Override
+			public void ancestorRemoved(AncestorEvent event) {
+				return;
+			}
+		});
 		final JComponent[] inputs = new JComponent[] { new JLabel(dialogText), textField };
 		JOptionPane.showMessageDialog(null, inputs, "Supply data", JOptionPane.PLAIN_MESSAGE);
 
@@ -82,7 +100,7 @@ public class ConnectBox implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if (event.getSource() == joinButton) {	
+		if (event.getSource() == joinButton) {
 			// Get host address.
 			String host = getStringWithDialog("Host address:");
 
@@ -104,7 +122,7 @@ public class ConnectBox implements ActionListener {
 				showMessage("Failed to connect to server at " + host);
 				return;
 			}
-		} else if (event.getSource() == hostButton) {		
+		} else if (event.getSource() == hostButton) {
 			// Get port number.
 			int port = 0;
 			while (port == 0) {
