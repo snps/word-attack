@@ -13,10 +13,12 @@ public class ClientMonitor {
 	private List<ClientConnection> connections;
 	private HashSet<Enemy> enemies;
 	private EnemyGenerator generator;
+	private boolean isRunningGame;
 
 	public ClientMonitor() {
 		connections = new ArrayList<ClientConnection>();
 		enemies = new HashSet<Enemy>();
+		isRunningGame = false;
 	}
 
 	public synchronized void addClientConnection(ClientConnection connection) {
@@ -32,6 +34,7 @@ public class ClientMonitor {
 		if (connections.isEmpty()) {
 			generator.interrupt();
 			enemies.clear();
+			isRunningGame = false;
 		}
 
 		System.out.println(connections.size() + "/" + Server.MAX_CLIENTS + " connection slots used");
@@ -39,6 +42,10 @@ public class ClientMonitor {
 
 	public synchronized int size() {
 		return connections.size();
+	}
+	
+	public synchronized boolean isRunningGame() {
+		return isRunningGame;
 	}
 
 	public void startEnemyGenerator() {
@@ -53,6 +60,7 @@ public class ClientMonitor {
 
 		generator = new EnemyGenerator(this);
 		generator.start();
+		isRunningGame = true;
 	}
 
 	public synchronized void addEnemy(Enemy enemy) {
