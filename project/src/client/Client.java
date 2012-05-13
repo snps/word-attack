@@ -20,10 +20,12 @@ public class Client implements Observer {
 	private Listener listener;
 
 	private String playerName;
+	private boolean immutablePlayers;
 
 	public Client(Gui gui, String playerName) {
 		this.gui = gui;
 		this.playerName = playerName;
+		immutablePlayers = false;
 	}
 
 	public void connect(String host, int port) throws IOException {
@@ -48,7 +50,7 @@ public class Client implements Observer {
 		NetPacket packet = new NetPacket(NetPacket.Type.NEW_PLAYER);
 		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
 		sendPacketToServer(packet);
-		
+
 		// Register data in Gui.
 		this.gui.addObserver(this);
 		this.gui.addPlayer(playerName);
@@ -70,6 +72,9 @@ public class Client implements Observer {
 		NetPacket packet = new NetPacket(NetPacket.Type.DISCONNECT_FROM_GAME);
 		packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
 		sendPacketToServer(packet);
+
+		// Lock player scores.
+		immutablePlayers = true;
 	}
 
 	public synchronized void disconnect() throws IOException {
@@ -119,13 +124,15 @@ public class Client implements Observer {
 	}
 
 	public void addCoPlayer(String playerName) {
-		if (!playerName.equals(this.playerName)) {
+		if (!immutablePlayers && !playerName.equals(this.playerName)) {
 			gui.addPlayer(playerName);
 		}
 	}
 
 	public void removeCoPlayer(String playerName) {
-		gui.removePlayer(playerName);
+		if (!immutablePlayers) {
+			gui.removePlayer(playerName);
+		}
 	}
 
 	public boolean hasCoPlayer(String playerName) {
