@@ -16,10 +16,12 @@ import java.util.Random;
 public class WordChooser {
 	private List<String> wordlist;
 	private List<String> chosenWords;
+	private List<Character> unavailLetters;
 
 	public WordChooser(List<String> wordlist) {
 		this.wordlist = wordlist;
-		chosenWords = new ArrayList<String>();
+		chosenWords = new ArrayList<String>();		
+		unavailLetters = new ArrayList<Character>();
 	}
 
 	public boolean hasAvailableWord() {
@@ -32,11 +34,11 @@ public class WordChooser {
 		}
 		boolean wordOk = false;
 		int n = 0;
-		while (n < wordlist.size()-1) {
+		while (n <= wordlist.size()-1) {
 			String word = wordlist.get(n);
 			int m = 0;
-			while(m < chosenWords.size()-1) {
-				if(word.charAt(0) == chosenWords.get(m).charAt(0)) {
+			while(m < chosenWords.size()) {
+				if(isAvailable(word)) {
 					wordOk = false;
 					break;
 				} 
@@ -51,6 +53,11 @@ public class WordChooser {
 		return false;
 	}
 
+	private boolean isAvailable(String word) {
+		char firstLetter = word.charAt(0);
+		return unavailLetters.contains(firstLetter);
+	}
+
 	public String getNextWord() {	
 		if(wordlist.isEmpty()) {
 			return null;
@@ -60,11 +67,13 @@ public class WordChooser {
 		String word = wordlist.get(index);
 		if(chosenWords.isEmpty()) {
 			chosenWords.add(word);
+			unavailLetters.add(word.charAt(0));
 			return word;
 		} else {
 			while(hasAvailableWord()) {
-				if(chosenWords.get(index).charAt(0) == word.charAt(0)){
+				if(!unavailLetters.contains(word.charAt(0))){
 					chosenWords.add(word);
+					unavailLetters.add(word.charAt(0));
 					return word;
 				} else {
 					index = rand.nextInt(wordlist.size());
@@ -77,6 +86,10 @@ public class WordChooser {
 
 	public void giveBackWord(String word) {
 		chosenWords.remove(word);
+		char letterToGiveBack= word.charAt(0);
+		int index = unavailLetters.indexOf(letterToGiveBack);
+		unavailLetters.remove(index);
 	}
+	
 		
 }
