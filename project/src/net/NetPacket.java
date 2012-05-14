@@ -11,7 +11,7 @@ package net;
  */
 public class NetPacket {
 	public static enum Type {
-		ACKNOWLEDGE, NEW_PLAYER, REMOVE_PLAYER, START_GAME, PLAYER_INPUT_UPDATE, CREATE_ENEMY, DESTROY_ENEMY, MOVE_ENEMIES, GAME_OVER, DISCONNECT_FROM_GAME, UNKNOWN
+		ACKNOWLEDGE, NEW_PLAYER, REMOVE_PLAYER, START_GAME, PLAYER_INPUT_UPDATE, CREATE_ENEMY, DESTROY_ENEMY, MOVE_ENEMIES, GAME_OVER, DISCONNECT_FROM_GAME, ERROR, UNKNOWN
 	};
 
 	public static final String PACKET_TAG = "packet";
@@ -21,6 +21,7 @@ public class NetPacket {
 	public static final String SPEED_TAG = "speed";
 	public static final String PLAYER_NAME_TAG = "player";
 	public static final String X_POS_TAG = "xpos";
+	public static final String MESSAGE_TAG = "message";
 
 	private static final String PACKET_HEAD = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><" + NetPacket.PACKET_TAG + ">";
 	private static final String PACKET_TAIL = "</" + NetPacket.PACKET_TAG + ">";
