@@ -23,19 +23,6 @@ public class EnemyGenerator extends Thread {
 	public void run() {
 		long time = System.currentTimeMillis();
 
-		// Read words from file.
-		WordFileReader wfr = null;
-		try {
-			wfr = new WordFileReader(WORD_FILE);
-		} catch (FileNotFoundException e) {
-			System.err.println("Word file not found!");
-			return;
-		}
-		List<String> wordlist = wfr.readWords();
-
-		// Create word chooser.
-		WordChooser chooser = new WordChooser(wordlist);
-
 		while (!isInterrupted()) {
 			NetPacket packet = new NetPacket(NetPacket.Type.MOVE_ENEMIES);
 
@@ -47,10 +34,10 @@ public class EnemyGenerator extends Thread {
 				clientMonitor.sendPacketToAllClients(packet);
 
 				// Create new enemy.
-				if (chooser.hasAvailableWord() && System.currentTimeMillis() > time + TIME_BETWEEN_CREATE_ENEMY) {
+				if (clientMonitor.hasAvailableWord() && System.currentTimeMillis() > time + TIME_BETWEEN_CREATE_ENEMY) {
 					// Get next word.
-					String word = chooser.getNextWord();
-					
+					String word = clientMonitor.getNextWord();
+
 					int speed = (int) Math.floor(Math.random() * 45 + 5);
 					int xPos = (int) Math.floor(Math.random() * (800 - Enemy.getWordWidth(word)));
 

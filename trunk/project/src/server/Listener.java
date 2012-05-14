@@ -38,7 +38,7 @@ public class Listener extends Thread {
 			} catch (NetPacketReaderTimeoutException e) {
 				continue;
 			} catch (IOException e) {
-				System.err.println("Server listener could not read packet from client!");
+				System.err.println("Server: listener could not read packet from client!");
 			}
 
 			// Handle packet.
@@ -47,7 +47,7 @@ public class Listener extends Thread {
 			}
 		}
 
-		System.out.println("Server listener terminated");
+		System.out.println("Server: listener terminated");
 	}
 
 	private void handlePacket(NetPacket packet) {
@@ -59,6 +59,7 @@ public class Listener extends Thread {
 				String playerName = packet.getPacketElementContent(NetPacket.PLAYER_NAME_TAG);
 				if (clientMonitor.enemyWordExists(word)) {
 					clientMonitor.removeEnemy(new Enemy(word, 0, 0));
+					clientMonitor.giveBackWord(word);
 					packet = new NetPacket(NetPacket.Type.DESTROY_ENEMY);
 					packet.addPacketElement(NetPacket.WORD_TAG, word);
 					packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
@@ -75,18 +76,20 @@ public class Listener extends Thread {
 				packet = new NetPacket(NetPacket.Type.REMOVE_PLAYER);
 				packet.addPacketElement(NetPacket.PLAYER_NAME_TAG, playerName);
 				clientMonitor.sendPacketToAllClients(packet);
-
+				
+				// Interrupt self.
 				interrupt();
+
 				try {
 					connection.disconnect();
 				} catch (IOException e) {
-					System.err.println("Server could not disconnect client!");
+					System.err.println("Server: could not disconnect client!");
 				}
 			} else {
-				System.err.println("Server listener received unknown package!");
+				System.err.println("Server: listener received unknown package!");
 			}
 		} catch (IOException e) {
-			System.err.println("Server failed to distribute packets!");
+			System.err.println("Server: failed to distribute packets!");
 		}
 	}
 }

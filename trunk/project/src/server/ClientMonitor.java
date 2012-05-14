@@ -1,22 +1,27 @@
 package server;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Vector;
 
 import net.NetPacket;
+import wordlist.WordChooser;
+import wordlist.WordFileReader;
 import enemy.Enemy;
 
 public class ClientMonitor {
-	private List<ClientConnection> connections;
+	public static final String WORD_FILE = "words/words3.txt";
+
+	private Vector<ClientConnection> connections;
 	private HashSet<Enemy> enemies;
 	private EnemyGenerator generator;
+	private WordChooser wordChooser;
 	private boolean isRunningGame;
 
 	public ClientMonitor() {
-		connections = new ArrayList<ClientConnection>();
+		connections = new Vector<ClientConnection>();
 		enemies = new HashSet<Enemy>();
 		isRunningGame = false;
 	}
@@ -24,7 +29,7 @@ public class ClientMonitor {
 	public synchronized void addClientConnection(ClientConnection connection) {
 		connections.add(connection);
 
-		System.out.println(connections.size() + "/" + Server.MAX_CLIENTS + " connection slots used");
+		System.out.println("Server: " + connections.size() + "/" + Server.MAX_CLIENTS + " connection slots used");
 	}
 
 	public synchronized void removeClientConnection(ClientConnection connection) {
@@ -32,23 +37,53 @@ public class ClientMonitor {
 		notifyAll();
 
 		if (connections.isEmpty()) {
-			generator.interrupt();
+			if (generator != null && generator.isAlive()) {
+				generator.interrupt();
+			}
 			enemies.clear();
 			isRunningGame = false;
 		}
 
-		System.out.println(connections.size() + "/" + Server.MAX_CLIENTS + " connection slots used");
+		System.out.println("Server: " + connections.size() + "/" + Server.MAX_CLIENTS + " connection slots used");
 	}
 
 	public synchronized int size() {
 		return connections.size();
 	}
-	
+
+	public synchronized boolean hasAvailableWord() {
+		return wordChooser.hasAvailableWord();
+	}
+
+	public synchronized String getNextWord() {
+		return wordChooser.getNextWord();
+	}
+
+	public synchronized void giveBackWord(String word) {
+		wordChooser.giveBackWord(word);
+	}
+
 	public synchronized boolean isRunningGame() {
 		return isRunningGame;
 	}
 
-	public void startEnemyGenerator() {
+	public synchronized void startEnemyGenerator() {
+		// Try to create the word chooser.
+		try {
+			wordChooser = new WordChooser(new WordFileReader(WORD_FILE).readWords());
+		} catch (FileNotFoundException e) {
+			System.err.println("Server: could not read word file " + WORD_FILE);
+			NetPacket packet = new NetPacket(NetPacket.Type.ERROR);
+			packet.addPacketElement(NetPacket.MESSAGE_TAG, "Server could not read word file");
+			try {
+				sendPacketToAllClients(packet);
+			} catch (IOException e1) {
+				System.err.println("Server: could not distribute error packets");
+			}
+			return;
+		}
+
+		// Terminate previously running generator.
 		if (generator != null && generator.isAlive()) {
 			generator.interrupt();
 			try {
@@ -58,6 +93,7 @@ public class ClientMonitor {
 			}
 		}
 
+		// Start the generator.
 		generator = new EnemyGenerator(this);
 		generator.start();
 		isRunningGame = true;
@@ -83,7 +119,7 @@ public class ClientMonitor {
 				try {
 					sendPacketToAllClients(new NetPacket(NetPacket.Type.GAME_OVER));
 				} catch (IOException e) {
-					System.err.println("Server could not send game over!");
+					System.err.println("Server: could not send game over!");
 				}
 
 				break;
