@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -75,30 +76,28 @@ public class TestWordChooser {
 	public void testGetCorrectNbrOfWords() {
 		WordChooser wc = new WordChooser(words2);
 
-		int nbr = 0;
-
+		int count = 0;
 		while (wc.hasAvailableWord()) {
 			wc.getNextWord();
-			nbr++;
+			count++;
 		}
 
-		assertEquals("Gave wrong number of words", 2, nbr);
+		assertEquals("Gave wrong number of words", 2, count);
 	}
-	
+
 	@Test
 	public void testGetCorrectNbrOfWordsFromLongList() {
 		WordChooser wc = new WordChooser(words3);
 
-		int nbr = 0;
-
+		int count = 0;
 		while (wc.hasAvailableWord()) {
 			wc.getNextWord();
-			nbr++;
+			count++;
 		}
 
-		assertEquals("Gave wrong number of words", 24, nbr);
+		assertEquals("Gave wrong number of words", 24, count);
 	}
-	
+
 	@Test
 	public void testGiveBackWordWithLongList() {
 		WordChooser wc = new WordChooser(words3);
@@ -114,7 +113,30 @@ public class TestWordChooser {
 		assertTrue("No words available although a word was given back", wc.hasAvailableWord());
 		assertFalse("Word was null", wc.getNextWord() == null);
 	}
-	
+
+	@Test
+	public void testGetWordsInRandomOrder() {
+		WordChooser wc = new WordChooser(words3);
+
+		int count = 0;
+		ArrayList<String> words = new ArrayList<String>();
+		while (wc.hasAvailableWord()) {
+			words.add(wc.getNextWord());
+			count++;
+		}
+
+		boolean sameOrder = true;
+		wc = new WordChooser(words3);
+		for (int i = 0; i < count; i++) {
+			if (!wc.getNextWord().equals(words.get(i))) {
+				sameOrder = false;
+				break;
+			}
+		}
+
+		assertFalse("Words were given in the same order twice", sameOrder);
+	}
+
 	private List<String> getWordlistFromFile(String fileName) {
 		WordFileReader wordReader = null;
 		try {
