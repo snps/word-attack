@@ -108,6 +108,16 @@ public class Listener extends Thread {
 			} catch (IOException e) {
 				System.err.println("Could not disconnect from server!");
 			}
+		} else if (type == NetPacket.Type.ERROR) {
+			String message = packet.getPacketElementContent(NetPacket.MESSAGE_TAG);
+			client.showMessage("Error: " + message);
+
+			// Send disconnect request.
+			try {
+				client.requestDisconnect();
+			} catch (IOException e) {
+				System.err.println("Client failed to send disconnect request!");
+			}
 		} else {
 			client.showMessage("Unknown packet received from server");
 		}
