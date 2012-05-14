@@ -1,12 +1,8 @@
 package server;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
 import net.NetPacket;
-import wordlist.WordChooser;
-import wordlist.WordFileReader;
 import enemy.Enemy;
 
 public class EnemyGenerator extends Thread {
