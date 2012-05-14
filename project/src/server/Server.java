@@ -32,7 +32,7 @@ public class Server extends Thread {
 
 		ServerSocket server = null;
 		outer: while (!isInterrupted()) {
-			System.out.println("Server listening for connections on port " + port);
+			System.out.println("Server: listening for connections on port " + port);
 			
 			while (!isInterrupted() && clientMonitor.size() < MAX_CLIENTS) {
 				// Interrupt when no clients connections left.
@@ -43,14 +43,14 @@ public class Server extends Thread {
 				try {
 					server = new ServerSocket(port);
 				} catch (IOException e) {
-					System.err.println("Server could not listen on port " + port);
+					System.err.println("Server: could not listen on port " + port);
 					break outer;
 				}
 
 				try {
 					server.setSoTimeout(SERVER_ACCEPT_TIMEOUT);
 				} catch (SocketException e) {
-					System.err.println("Could not set server socket timeout");
+					System.err.println("Server: Could not set server socket timeout");
 				}
 
 				try {
@@ -72,16 +72,17 @@ public class Server extends Thread {
 						clientMonitor.startEnemyGenerator();
 					}
 
-					System.out.println("Client connected from " + socket.getInetAddress().toString());
+					System.out.println("Server: client connected from " + socket.getInetAddress().toString());
 				} catch (IOException e) {
-					System.err.println("Server could not open connection to client!");
+					System.err.println("Server: could not open connection to client!");
 				}
 
 				hasStarted = true;
 			}
+			System.out.println("Server: waiting for client to disconnect...");
 			clientMonitor.waitForDisconnect();
 		}
 
-		System.out.println("Server shutting down");
+		System.out.println("Server: shutting down");
 	}
 }
