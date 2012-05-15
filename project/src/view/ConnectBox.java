@@ -101,6 +101,11 @@ public class ConnectBox implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == joinButton) {
+			if (nameField.getText().isEmpty()) {
+				showMessage("You must supply a name");
+				return;
+			}
+			
 			// Get host address.
 			String host = getStringWithDialog("Host address:");
 
@@ -123,6 +128,11 @@ public class ConnectBox implements ActionListener {
 				return;
 			}
 		} else if (event.getSource() == hostButton) {
+			if (nameField.getText().isEmpty()) {
+				showMessage("You must supply a name");
+				return;
+			}
+			
 			// Get port number.
 			int port = 0;
 			while (port == 0) {
