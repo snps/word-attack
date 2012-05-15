@@ -6,8 +6,8 @@ import net.NetPacket;
 import enemy.Enemy;
 
 public class EnemyGenerator extends Thread {
-	public static final int TIME_BETWEEN_MOVES = 500;
-	public static final int TIME_BETWEEN_CREATE_ENEMY = 1000;
+	public static final int TIME_BETWEEN_MOVES = 1000;
+	public static final int TIME_BETWEEN_CREATE_ENEMY = 4000;
 	public static final String WORD_FILE = "words/words3.txt";
 
 	private ClientMonitor clientMonitor;
