@@ -1,5 +1,7 @@
 package net;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * <p>
  * Implementation of a carrier packet which holds XML data.
@@ -57,11 +59,16 @@ public class NetPacket {
 	 * Constructs a {@link NetPacket} around the specified XML data.
 	 * </p>
 	 * 
-	 * @param XMLData
+	 * @param xmlData
 	 *            the XML data
 	 */
-	public NetPacket(byte[] XMLData) {
-		payload = new String(XMLData);
+	public NetPacket(byte[] xmlData) {
+		try {
+			payload = new String(xmlData, "UTF8");
+		} catch (UnsupportedEncodingException e) {
+			System.err.println("Could not decode the data using UTF-8. Using system default charset.");
+			payload = new String(xmlData);
+		}
 	}
 
 	/**
@@ -70,13 +77,18 @@ public class NetPacket {
 	 * </p>
 	 * <p>
 	 * Returns a byte array representation of the {@link NetPacket}
-	 * <code>payload</code> data.
+	 * <code>payload</code> data. The data is encoded to bytes using UTF-8.
 	 * </p>
 	 * 
-	 * @return
+	 * @return a byte array representing the packet data.
 	 */
 	public byte[] getBytes() {
-		return payload.getBytes();
+		try {
+			return payload.getBytes("UTF8");
+		} catch (UnsupportedEncodingException e) {
+			System.err.println("Could not encode to UTF-8. Using system default charset.");
+			return payload.getBytes();
+		}
 	}
 
 	/**
