@@ -9,7 +9,13 @@ import client.Client;
 public class ClientTest {
 	public static void main(String[] args) {
 		String name = "Felix";
-		String host = "localhost";
+		String server = "localhost";
+		if(args.length == 2) {
+			server = args[0];
+			name = args[1];
+		} else {
+			System.out.println("Using standard name " + name + " and defaulting server location to " + server + ".");
+		}
 		Gui gui = new PlayBoard();
 		Client client = new Client(gui, name);
 
@@ -24,7 +30,7 @@ public class ClientTest {
 		}
 
 		try {
-			client.connect(host, 4444);
+			client.connect(server, 4444);
 			//client.sendStartRequest();
 		} catch (IOException e) {
 			System.err.println("Could not connect to server!");
