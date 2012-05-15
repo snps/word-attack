@@ -8,8 +8,10 @@ import client.Client;
 
 public class ClientTest {
 	public static void main(String[] args) {
+		String name = "Felix";
+		String host = "localhost";
 		Gui gui = new PlayBoard();
-		Client client = new Client(gui, "Felix");
+		Client client = new Client(gui, name);
 
 		// ServerStub stub = new ServerStub(4444);
 		// stub.setDaemon(true);
@@ -22,7 +24,7 @@ public class ClientTest {
 		}
 
 		try {
-			client.connect("localhost", 4444);
+			client.connect(host, 4444);
 			//client.sendStartRequest();
 		} catch (IOException e) {
 			System.err.println("Could not connect to server!");
