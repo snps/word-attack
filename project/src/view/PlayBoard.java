@@ -141,7 +141,7 @@ public class PlayBoard extends Gui implements ActionListener {
 
 	public void addEnemy(Enemy enemy) {
 		if (!enemies.containsKey(enemy)) {
-			JLabel label = new JLabel(enemy.getWord());
+			JLabel label = new JLabel("<html><font color=red>" + enemy.getWord() + "</font></html>");
 			label.setBounds(enemy.getXPos(), enemy.getYPos(), Enemy.getWordWidth(enemy.getWord()), 20);
 			enemies.put(enemy, label);
 			wordPanel.add(label);
