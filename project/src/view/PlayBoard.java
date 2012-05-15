@@ -22,7 +22,7 @@ import enemy.Enemy;
 
 public class PlayBoard extends Gui implements ActionListener {
 	private static final String PROGRAM_TITLE = "Word Attack";
-	private static final String PROGRAM_VERSION = "0.5";
+	private static final String PROGRAM_VERSION = "0.9";
 
 	public static final int PROGRAM_WIDTH = 800;
 	public static final int PROGRAM_HEIGHT = 600;
