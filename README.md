@@ -1,10 +1,10 @@
 # Word Attack
 
-***A small networked multiplayer game where the players battle each other by typing very fast.***
+***A small networked multiplayer game where players can battle each other by typing very fast.***
 
 ### Build instructions
 
-The project can be built by importing as existing project in [Eclipse](https://eclipse.org/).
+The project can be built by cloning the repository and importing it as an existing Java project in [Eclipse](https://eclipse.org/).
 
 ### Play instructions
 
