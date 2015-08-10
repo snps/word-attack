@@ -16,8 +16,8 @@ The project can be built by importing as existing project in [Eclipse](https://e
 
     * If joining a game, specify the port number that the host is listening on.
 
-3. Play the game by typing the words that enter the screen as fast as possible (end words by pressing enter). The game is over when a word reaches the bottom of the screen. The player with the highest score wins!
+3. Play the game by typing the words that enter the screen* as fast as possible (end words by pressing <kbd>Enter</kbd>). The game is over when a word reaches the bottom of the screen. The player with the highest score wins!
 
 ![Image of game during play](https://raw.githubusercontent.com/snps/word-attack/master/word-attack.png)
 
-*Note that the vertical speed of the words will increase during the course of the game.*
+**Note that the vertical speed of the words will increase during the course of the game.*
